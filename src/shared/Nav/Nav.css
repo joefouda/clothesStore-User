@@ -1,0 +1,35 @@
+.Nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2vw;
+}
+
+.Nav-start {
+    display: flex;
+    gap: 2vw;
+}
+
+
+.ant-btn {
+    border:none;
+    font-size:1.2rem;
+    font-weight: bold;
+    height: 100%
+}
+
+.Nav-buttons .ant-btn{
+    font-size: 1.8rem;
+}
+
+.ant-btn:hover {
+    color:#6f6c6c;
+}
+@media screen and (max-width: 700px) {
+    .Nav{
+        flex-direction: column;
+    }
+    .Nav-start {
+        flex-direction: column;
+    }
+  }
