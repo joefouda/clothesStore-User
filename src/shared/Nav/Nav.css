@@ -22,8 +22,9 @@
     font-size: 1.8rem;
 }
 
-.ant-btn:hover {
-    color:#6f6c6c;
+.ant-btn:hover, .ant-btn:focus {
+    color: #6f6c6c;
+    background: #fff;
 }
 @media screen and (max-width: 700px) {
     .Nav{
