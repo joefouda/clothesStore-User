@@ -1,0 +1,20 @@
+.cart-button {
+    background-color: black;
+    margin-right: 0.5vw;
+    color: white;
+}
+
+.cart-button:hover, .cart-button:focus {
+    background-color: rgba(0, 0, 0, 0.668);
+    color: white;
+}
+
+.favorite-button {
+    background-color: wheat;
+    color: rgba(0, 0, 0, 0.575);
+}
+
+.favorite-button:hover, .favorite-button:focus {
+    color: black;
+    background-color: rgba(245, 222, 179, 0.805);
+}

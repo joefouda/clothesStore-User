@@ -1,6 +1,6 @@
 import Filter from '../components/Filter/Filter'
 
-const FilterPage = ()=>{
+const FilterPage = (props)=>{
     return <Filter />
 }
 

@@ -1,0 +1,63 @@
+import './Cart.css'
+import { List, Empty, Button, Divider } from 'antd';
+import React, { useContext } from 'react';
+import { DispatchContext } from '../../contexts/cartContext';
+import { CartContext } from '../../contexts/cartContext';
+
+const CartPreview = () => {
+    const cart = useContext(CartContext)
+    const dispatch = useContext(DispatchContext)
+    return (
+        cart.length === 0 ? <Empty
+            description={
+                <span>
+                    Your Cart is Empty
+                </span>
+            }
+        >
+        </Empty> :
+            <>
+                <List
+                    itemLayout="vertical"
+                    dataSource={cart}
+                    renderItem={item => (
+                        <List.Item
+                            actions={[<a key="list-loadmore-edit">edit</a>, <a key="list-removeitem-remove" onClick={()=>dispatch({ type: 'REMOVE', id: item.product._id })}>remove</a>]}
+                            extra={
+                                <img
+                                    width='100%'
+                                    height='auto'
+                                    alt="logo"
+                                    src={item.product.photo}
+                                />
+                            }
+                        >
+                            <List.Item.Meta
+                                title={<a href="https://ant.design">{item.product.name}</a>}
+                                description={`quantity: ${item.quantity}, price: ${item.product.price}`}
+                            />
+                            {item.product.specs.reduce((total, ele, index) => {
+                                if (index === item.product.specs.length - 1) return total + `${ele.name}: ${ele.value}`
+                                return total + `${ele.name}: ${ele.value}, `
+                            }, '')}
+                        </List.Item>
+                    )}
+                />
+                <Divider />
+                <div className='order-total'>
+                    <p>Order Total (Execluding Delivary)</p>
+                    <span>LE {cart.reduce((total, ele) => (total + ele.orderPrice), 0)}</span>
+                </div>
+                <div className='order-actions'>
+                    <Button className='view-button'>
+                        View Cart
+                    </Button>
+                    <Button className='checkout-button'>
+                        Checkout
+                    </Button>
+                </div>
+            </>
+    )
+};
+
+export default CartPreview;

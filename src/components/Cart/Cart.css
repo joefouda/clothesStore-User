@@ -1,0 +1,36 @@
+.ant-list-item-extra {
+    display: flex;
+    justify-content: end;
+    width: 50%;
+}
+
+.order-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+}
+
+.order-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.checkout-button {
+    background-color: black;
+    color: white;
+}
+
+.checkout-button:hover, .checkout-button:focus {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.668);
+}
+
+.view-button {
+    color: black;
+    background-color: white;
+}
+
+.view-button:hover, .view-button:focus {
+    color: rgba(0, 0, 0, 0.575);
+    background-color: white;
+}

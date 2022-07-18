@@ -19,10 +19,16 @@
 }
 
 .Nav-buttons .ant-btn{
-    font-size: 1.8rem;
+    color: #6f6c6c;
+    background: #fff;
 }
 
-.ant-btn:hover, .ant-btn:focus {
+.Nav-buttons  .ant-btn:hover, .ant-btn:focus {
+    color: #6f6c6c;
+    background: #fff;
+}
+
+.Nav-links .ant-btn:hover, .ant-btn:focus {
     color: #6f6c6c;
     background: #fff;
 }

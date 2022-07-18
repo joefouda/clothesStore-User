@@ -1,0 +1,6 @@
+.Filter-Products {
+    display: grid;
+    grid-template-columns: repeat(5,auto);
+    justify-content: center;
+    gap: 2vw;
+}
