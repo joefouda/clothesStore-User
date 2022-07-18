@@ -1,3 +1,7 @@
 .Product-Card {
     height: 20vh;
 }
+
+.anticon-heart svg{
+    color: rgb(219, 4, 4);
+}

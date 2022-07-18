@@ -1,0 +1,19 @@
+.login-button {
+    background-color: black;
+    color: white;
+}
+
+.login-button:hover, .login-button:focus {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.668);
+}
+
+.register-button {
+    color: black;
+    background-color: white;
+}
+
+.register-button:hover, .register-button:focus {
+    color: rgba(0, 0, 0, 0.575);
+    background-color: white;
+}

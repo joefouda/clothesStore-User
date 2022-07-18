@@ -14,7 +14,7 @@ const PopOver = (props) => {
       placement="bottomRight"
       onVisibleChange={ToggleHovered}
     >   
-        <Button>{props.title}</Button>
+        <Button style={{fontFamily:'Source Sans Pro, sans-serif'}}>{props.title}</Button>
     </Popover>
   );
 };

@@ -3,8 +3,10 @@ import { List, Empty, Button, Divider } from 'antd';
 import React, { useContext } from 'react';
 import { DispatchContext } from '../../contexts/cartContext';
 import { CartContext } from '../../contexts/cartContext';
+import { NotificationContext } from '../../contexts/notificationContext';
 
 const CartPreview = () => {
+    const { openNotification } = useContext(NotificationContext)
     const cart = useContext(CartContext)
     const dispatch = useContext(DispatchContext)
     return (
@@ -22,7 +24,13 @@ const CartPreview = () => {
                     dataSource={cart}
                     renderItem={item => (
                         <List.Item
-                            actions={[<a key="list-loadmore-edit">edit</a>, <a key="list-removeitem-remove" onClick={()=>dispatch({ type: 'REMOVE', id: item.product._id })}>remove</a>]}
+                            actions={[
+                                <a key="list-loadmore-edit">edit</a>,
+                                <a key="list-removeitem-remove" onClick={()=>{
+                                    dispatch({ type: 'REMOVE', id: item.product._id })
+                                    openNotification('success', 'removed from Cart successfully')
+                                }}>remove</a>
+                            ]}
                             extra={
                                 <img
                                     width='100%'

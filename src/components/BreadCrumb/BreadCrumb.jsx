@@ -7,8 +7,8 @@ const BreadCrumb = (props)=>{
             <Breadcrumb.Item>Home</Breadcrumb.Item>
             <Breadcrumb.Item>{props.category}</Breadcrumb.Item>
             <Breadcrumb.Item>{props.subCategory}</Breadcrumb.Item>
-            <Breadcrumb.Item>{props.product}</Breadcrumb.Item>
             <Breadcrumb.Item>{props.model}</Breadcrumb.Item>
+            <Breadcrumb.Item>{props.product}</Breadcrumb.Item>
         </Breadcrumb>
     )
 }

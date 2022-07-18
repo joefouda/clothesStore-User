@@ -1,12 +1,15 @@
 import './ProductDetails.css'
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import axios from 'axios'
 import BreadCrumb from '../BreadCrumb/BreadCrumb';
 import MainWrapper from "../../shared/main-wrapper";
 import { Select, Button, Form, InputNumber, Image, Tag } from 'antd';
-import { PlusOutlined, HeartOutlined } from '@ant-design/icons';
+import { PlusOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { DispatchContext } from '../../contexts/cartContext';
+import { DispatchFavoriteContext } from '../../contexts/favoriteContext'
+import { FavoriteContext } from '../../contexts/favoriteContext';
+import { NotificationContext } from '../../contexts/notificationContext';
 import { useContext } from 'react';
 
 const tempProduct = {
@@ -21,31 +24,36 @@ const tempProduct = {
 
 const ProductDetails = () => {
     const dispatch = useContext(DispatchContext)
+    const dispatchFavorite = useContext(DispatchFavoriteContext)
+    const favorites = useContext(FavoriteContext)
+    const { openNotification } = useContext(NotificationContext)
     
     const [product, setProduct] = useState({})
-    const [products, setProducts] = useState([])
     const [specs, setSpecs] = useState([])
     const [quantity, setQuantity] = useState(0)
     const [query, setQuery] = useState([])
     const [levels, setLevels] = useState(useParams())
+    const navigate = useNavigate()
 
     const handleChange = (name, value) => {
         let old = query.findIndex(ele=>ele.name === name)
         let newQuery = [...query]
         newQuery[old].value = value
-        let p = products.find(p=>{
-            return newQuery.every((ele,index)=>{
-                return p.specs[index].value === ele.value
-            })
+        let data = {model:levels.model,specs:newQuery}
+        console.log(data)
+        axios.put(`http://localhost:3000/api/v1/product/specs`, data).then((res) => {
+            console.log(res)
+            if(res.data.message === 'notfound'){
+                setProduct({...tempProduct})
+                setLevels((oldLevels)=>({...oldLevels, product:tempProduct.name}))
+                navigate(`/${levels.category}/${levels.subCategory}/${levels.model}/${tempProduct.name}/${tempProduct._id}`)
+            } else {
+                setQuery(res.data.product.specs)
+                setProduct(res.data.product)
+                setLevels((oldLevels)=>({...oldLevels, product:res.data.product.name}))
+                navigate(`/${levels.category}/${levels.subCategory}/${levels.model}/${res.data.product.name}/${res.data.product._id}`)
+            }
         })
-        if(p){
-            setProduct({...p})
-            setLevels((oldLevels)=>({...oldLevels, product:p.name}))
-        }else {
-            setProduct({...tempProduct})
-            setLevels((oldLevels)=>({...oldLevels, product:tempProduct.name}))
-        } 
-        
     };
 
     const onQuantityChange = (value)=>{
@@ -59,13 +67,17 @@ const ProductDetails = () => {
             orderPrice:quantity * product.price
         }
         dispatch({type:'ADD', orderItem})
+        openNotification('success', 'added to Cart successfully')
     }
 
     const handleAddToFavorites = ()=>{
-        let data = {
-            product,
-        }
-        console.log(data)
+        dispatchFavorite({type:'ADD', product})
+        openNotification('success', 'added to favorites successfully')
+    }
+
+    const handleRemoveFromFavorites = ()=>{
+        dispatchFavorite({type:'REMOVE', id:product._id})
+        openNotification('success', 'removed from favorites successfully')
     }
     useEffect(() => {
         axios.get(`http://localhost:3000/api/v1/product/${levels.id}`).then((res) => {
@@ -75,10 +87,6 @@ const ProductDetails = () => {
                 setSpecs(res.data.subCategory.specs)
                 setLevels((oldLevels)=>({...oldLevels, subCategory:res.data.subCategory.name}))
             })
-        })
-
-        axios.get(`http://localhost:3000/api/v1/product`).then((res) => {
-            setProducts(res.data.products)
         })
     }, [])
 
@@ -122,15 +130,14 @@ const ProductDetails = () => {
                             </Form.Item>)
                         })}
                         <Form.Item label="quantity" style={{justifyContent:'center'}}>
-                            <InputNumber min={1} max={product.stock} style={{width:'30vw'}} onChange={onQuantityChange} disabled={product.stock === 0?true:false}/>
+                            <InputNumber defaultValue={1} min={1} max={product.stock} style={{width:'30vw'}} onChange={onQuantityChange} disabled={product.stock === 0?true:false}/>
                         </Form.Item>
                         <Form.Item style={{justifyContent:'center'}}>
                             <Button type="primary" className="cart-button" icon={<PlusOutlined />} disabled={product.stock === 0 || quantity === 0? true:false} onClick={handleAddToCart}>
                                 Add To Cart
                             </Button>
-                            <Button type="primary" className="favorite-button" icon={<HeartOutlined />} disabled={product._id === 1 ? true:false} onClick={handleAddToFavorites}>
-                                Add To Favorites
-                            </Button>
+                            {favorites.findIndex(ele=>ele._id === product._id) === -1?<Button size='large' icon={<HeartOutlined />} disabled={product._id === 1 ? true:false} onClick={handleAddToFavorites} />:
+                            <Button size='large' icon={<HeartFilled />} disabled={product._id === 1 ? true:false} onClick={handleRemoveFromFavorites}/>}
                         </Form.Item>
                     </Form>
                     <p style={{maxWidth:'30vw', margin: 'auto', textAlign:'center', overflowWrap:'break-word'}}>{product.description}</p>
