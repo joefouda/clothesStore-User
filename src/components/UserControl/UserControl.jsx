@@ -1,60 +1,25 @@
 import './UserControl.css'
-import { Form, Input, Button } from 'antd'
+import { Button } from 'antd';
+import Login from '../Login/Login';
+import authentication from '../../auth/authentication';
+import { useNavigate } from 'react-router-dom';
+import { DispatchContext } from '../../contexts/cartContext';
+import { DispatchFavoriteContext } from '../../contexts/favoriteContext';
+import { useContext } from 'react';
 
-
-const UserControl = () => {
-    const onFinish = (values) => {
-        console.log(values)
+const UserControl = (props) => {
+    const dispatch = useContext(DispatchContext)
+    const dispatchFavorites = useContext(DispatchFavoriteContext)
+    const navigate = useNavigate()
+    const handleLogout = ()=>{
+        localStorage.clear()
+        dispatch({type:'CLEAR'})
+        dispatchFavorites({type:'CLEAR'})
+        props.ToggleUserControlVisable()
+        navigate('/login')
     }
-    const [loginForm] = Form.useForm();
     return (
-        <>
-            <h2>Log In</h2>
-            <p style={{marginBottom:'5vh'}}>Log in to quickly navigate to the page you’re looking for.</p>
-            <Form
-                form={loginForm}
-                wrapperCol={{
-                    span: 24,
-                }}
-                initialValues={{
-                    remember: true,
-                }}
-                onFinish={onFinish}
-                autoComplete="off"
-            >
-                <Form.Item
-                    name="email"
-                    rules={[
-                        {
-                            required: true,
-                        },
-                        {
-                            type: 'email',
-                        }
-                    ]}
-                >
-                    <Input placeholder="Email" size="large" allowClear />
-                </Form.Item>
-                <Form.Item
-                    name="password"
-                    rules={[
-                        {
-                            required: true,
-                        },
-                        {
-                            min: 8
-                        }
-                    ]}
-                >
-                    <Input.Password placeholder="Password" size="large" allowClear />
-                </Form.Item>
-                <Form.Item >
-                    <Button className='login-button' type="primary" htmlType="submit" size='large'>
-                        Login
-                    </Button>
-                </Form.Item>
-            </Form>
-        </>
+        authentication.isAuthinticated()?<Button className='logout-button' onClick={handleLogout} type="link">Logout</Button>:<Login ToggleUserControlVisable={props.ToggleUserControlVisable}/>
     )
 };
 

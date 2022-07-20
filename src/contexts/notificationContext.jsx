@@ -4,18 +4,19 @@ import  { notification } from 'antd'
 export const NotificationContext = createContext([])
 
 const openNotification = (status, message) => {
-    console.log(status, message)
     switch(status){
         case 'error':
             notification.error({
                 message,
-                placement: 'topLeft'
+                placement: 'bottomLeft'
             });
+            break;
         case 'success':
             notification.success({
                 message,
                 placement: 'bottomLeft'
             });
+            break;
     }
     
 };

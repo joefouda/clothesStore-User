@@ -1,0 +1,19 @@
+.login-button {
+    background-color: black;
+    color: white;
+    width: 100%;
+}
+
+.login-button:hover, .login-button:focus {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.848);
+}
+
+.login-signup-button {
+    color: black;
+    font-size: medium;
+}
+
+.login-signup-button, .login-signup-button {
+    color: rgba(0, 0, 0, 0.848);
+}

@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom"
 import axios from 'axios'
 import BreadCrumb from '../BreadCrumb/BreadCrumb';
 import MainWrapper from "../../shared/main-wrapper";
+import authentication from '../../auth/authentication';
 import { Select, Button, Form, InputNumber, Image, Tag } from 'antd';
 import { PlusOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { DispatchContext } from '../../contexts/cartContext';
@@ -23,6 +24,7 @@ const tempProduct = {
 
 
 const ProductDetails = () => {
+    const [variantsForm] = Form.useForm();
     const dispatch = useContext(DispatchContext)
     const dispatchFavorite = useContext(DispatchFavoriteContext)
     const favorites = useContext(FavoriteContext)
@@ -30,7 +32,6 @@ const ProductDetails = () => {
     
     const [product, setProduct] = useState({})
     const [specs, setSpecs] = useState([])
-    const [quantity, setQuantity] = useState(0)
     const [query, setQuery] = useState([])
     const [levels, setLevels] = useState(useParams())
     const navigate = useNavigate()
@@ -39,10 +40,8 @@ const ProductDetails = () => {
         let old = query.findIndex(ele=>ele.name === name)
         let newQuery = [...query]
         newQuery[old].value = value
-        let data = {model:levels.model,specs:newQuery}
-        console.log(data)
-        axios.put(`http://localhost:3000/api/v1/product/specs`, data).then((res) => {
-            console.log(res)
+
+        axios.put(`http://localhost:3000/api/v1/product/specs`, {model:levels.model,specs:newQuery}).then((res) => {
             if(res.data.message === 'notfound'){
                 setProduct({...tempProduct})
                 setLevels((oldLevels)=>({...oldLevels, product:tempProduct.name}))
@@ -56,18 +55,29 @@ const ProductDetails = () => {
         })
     };
 
-    const onQuantityChange = (value)=>{
-        setQuantity(value)
-    }
-
     const handleAddToCart = ()=>{
         let orderItem = {
             product,
-            quantity,
-            orderPrice:quantity * product.price
+            quantity:variantsForm.getFieldValue('quantity'),
+            orderPrice:variantsForm.getFieldValue('quantity') * product.price
         }
         dispatch({type:'ADD', orderItem})
-        openNotification('success', 'added to Cart successfully')
+        if (authentication.isAuthinticated()){
+            axios.post('http://localhost:3000/api/v1/cart/add', {...orderItem},{
+                headers:{
+                    'Authorization': localStorage.getItem('token')
+                }
+            }).then(res=>{
+                console.log(res)
+                dispatch({type:'MERGE', cart:res.data.cart})
+                openNotification('success', res.data.message)
+            }).catch(error=>{
+                console.log(error)
+            })
+        }else {
+            openNotification('success', 'added to cart successfully')
+        }
+
     }
 
     const handleAddToFavorites = ()=>{
@@ -79,8 +89,12 @@ const ProductDetails = () => {
         dispatchFavorite({type:'REMOVE', id:product._id})
         openNotification('success', 'removed from favorites successfully')
     }
+    
     useEffect(() => {
         axios.get(`http://localhost:3000/api/v1/product/${levels.id}`).then((res) => {
+            if (res.data.message === "internal server error") {
+                navigate(`/filter/${levels.category}/${levels.subCategory}`)
+            }
             setQuery(res.data.product.specs)
             setProduct(res.data.product)
             axios.get(`http://localhost:3000/api/v1/subCategory/${res.data.product.subCategory}`).then((res) => {
@@ -110,6 +124,10 @@ const ProductDetails = () => {
                     </div>
                     
                     <Form
+                        form={variantsForm}
+                        initialValues={{
+                            quantity:1
+                        }}
                         labelCol={{ span: 2 }}
                         wrapperCol={{ span: 14 }}
                         layout="horizontal"
@@ -129,11 +147,11 @@ const ProductDetails = () => {
                                 </Select>
                             </Form.Item>)
                         })}
-                        <Form.Item label="quantity" style={{justifyContent:'center'}}>
-                            <InputNumber defaultValue={1} min={1} max={product.stock} style={{width:'30vw'}} onChange={onQuantityChange} disabled={product.stock === 0?true:false}/>
+                        <Form.Item label="quantity" name='quantity' style={{justifyContent:'center'}}>
+                            <InputNumber min={1} max={product.stock} style={{width:'30vw'}} disabled={product.stock === 0?true:false}/>
                         </Form.Item>
                         <Form.Item style={{justifyContent:'center'}}>
-                            <Button type="primary" className="cart-button" icon={<PlusOutlined />} disabled={product.stock === 0 || quantity === 0? true:false} onClick={handleAddToCart}>
+                            <Button type="primary" className="cart-button" icon={<PlusOutlined />} disabled={product.stock === 0? true:false} onClick={handleAddToCart}>
                                 Add To Cart
                             </Button>
                             {favorites.findIndex(ele=>ele._id === product._id) === -1?<Button size='large' icon={<HeartOutlined />} disabled={product._id === 1 ? true:false} onClick={handleAddToFavorites} />:
