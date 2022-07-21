@@ -1,16 +1,23 @@
 import './Cart.css'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import React, { useContext } from 'react';
 import { DispatchContext } from '../../contexts/cartContext';
 import { CartContext } from '../../contexts/cartContext';
+import { CartVisableContext } from '../../contexts/cartContext';
 import { NotificationContext } from '../../contexts/notificationContext';
 import { List, Empty, Button, Divider } from 'antd';
 
 const CartPreview = () => {
     const navigate = useNavigate()
     const { openNotification } = useContext(NotificationContext)
+    const {toggleCartVisable} = useContext(CartVisableContext)
     const cart = useContext(CartContext)
     const dispatch = useContext(DispatchContext)
+
+    const handleCheckout = ()=>{
+        toggleCartVisable()
+        navigate('/checkout')
+    }
     return (
         cart.length === 0 ? <Empty
             description={
@@ -44,7 +51,7 @@ const CartPreview = () => {
                             }
                         >
                             <List.Item.Meta
-                                title={<a href="https://ant.design">{item.product.name}</a>}
+                                title={<Link to={`/${item.product.category.name}/${item.product.subCategory.name}/${item.product.model}/${item.product.name}/${item.product._id}`} >{item.product.name}</Link>}
                                 description={`quantity: ${item.quantity}, price: ${item.product.price}`}
                             />
                             {item.product.specs.reduce((total, ele, index) => {
@@ -63,7 +70,7 @@ const CartPreview = () => {
                     <Button className='view-button'>
                         View Cart
                     </Button>
-                    <Button className='checkout-button' onClick={()=> navigate('/checkout')}>
+                    <Button className='checkout-button' onClick={handleCheckout}>
                         Checkout
                     </Button>
                 </div>

@@ -1,5 +1,6 @@
 import './UserControl.css'
-import { Button } from 'antd';
+import { Button, Divider } from 'antd';
+import { UserOutlined, LogoutOutlined } from '@ant-design/icons'
 import Login from '../Login/Login';
 import authentication from '../../auth/authentication';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +8,7 @@ import { DispatchContext } from '../../contexts/cartContext';
 import { DispatchFavoriteContext } from '../../contexts/favoriteContext';
 import { useContext } from 'react';
 
-const UserControl = (props) => {
+const AuthenticatedContent = (props)=>{
     const dispatch = useContext(DispatchContext)
     const dispatchFavorites = useContext(DispatchFavoriteContext)
     const navigate = useNavigate()
@@ -19,7 +20,20 @@ const UserControl = (props) => {
         navigate('/login')
     }
     return (
-        authentication.isAuthinticated()?<Button className='logout-button' onClick={handleLogout} type="link">Logout</Button>:<Login ToggleUserControlVisable={props.ToggleUserControlVisable}/>
+        <>
+            <Button className='control-button' icon={<UserOutlined />} onClick={()=>{
+                navigate('/profile')
+                props.ToggleUserControlVisable()
+            }}>Profile</Button>
+            <Divider />
+            <Button className='control-button' icon={<LogoutOutlined />} onClick={handleLogout}>Logout</Button>
+        </>
+    )
+}
+
+const UserControl = (props) => {
+    return (
+        authentication.isAuthinticated()?<AuthenticatedContent ToggleUserControlVisable={props.ToggleUserControlVisable} />:<Login ToggleUserControlVisable={props.ToggleUserControlVisable}/>
     )
 };
 

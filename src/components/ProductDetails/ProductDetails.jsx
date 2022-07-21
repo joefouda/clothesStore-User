@@ -1,6 +1,6 @@
 import './ProductDetails.css'
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"
+import { useParams, useNavigate, useLocation } from "react-router-dom"
 import axios from 'axios'
 import BreadCrumb from '../BreadCrumb/BreadCrumb';
 import MainWrapper from "../../shared/main-wrapper";
@@ -8,6 +8,7 @@ import authentication from '../../auth/authentication';
 import { Select, Button, Form, InputNumber, Image, Tag } from 'antd';
 import { PlusOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { DispatchContext } from '../../contexts/cartContext';
+import { CartVisableContext } from '../../contexts/cartContext';
 import { DispatchFavoriteContext } from '../../contexts/favoriteContext'
 import { FavoriteContext } from '../../contexts/favoriteContext';
 import { NotificationContext } from '../../contexts/notificationContext';
@@ -24,7 +25,9 @@ const tempProduct = {
 
 
 const ProductDetails = () => {
+    const location = useLocation()
     const [variantsForm] = Form.useForm();
+    const {toggleCartVisable} = useContext(CartVisableContext)
     const dispatch = useContext(DispatchContext)
     const dispatchFavorite = useContext(DispatchFavoriteContext)
     const favorites = useContext(FavoriteContext)
@@ -33,7 +36,7 @@ const ProductDetails = () => {
     const [product, setProduct] = useState({})
     const [specs, setSpecs] = useState([])
     const [query, setQuery] = useState([])
-    const [levels, setLevels] = useState(useParams())
+    const levels = useParams()
     const navigate = useNavigate()
 
     const handleChange = (name, value) => {
@@ -44,12 +47,10 @@ const ProductDetails = () => {
         axios.put(`http://localhost:3000/api/v1/product/specs`, {model:levels.model,specs:newQuery}).then((res) => {
             if(res.data.message === 'notfound'){
                 setProduct({...tempProduct})
-                setLevels((oldLevels)=>({...oldLevels, product:tempProduct.name}))
                 navigate(`/${levels.category}/${levels.subCategory}/${levels.model}/${tempProduct.name}/${tempProduct._id}`)
             } else {
                 setQuery(res.data.product.specs)
                 setProduct(res.data.product)
-                setLevels((oldLevels)=>({...oldLevels, product:res.data.product.name}))
                 navigate(`/${levels.category}/${levels.subCategory}/${levels.model}/${res.data.product.name}/${res.data.product._id}`)
             }
         })
@@ -68,14 +69,15 @@ const ProductDetails = () => {
                     'Authorization': localStorage.getItem('token')
                 }
             }).then(res=>{
-                console.log(res)
                 dispatch({type:'MERGE', cart:res.data.cart})
                 openNotification('success', res.data.message)
+                toggleCartVisable()
             }).catch(error=>{
                 console.log(error)
             })
         }else {
             openNotification('success', 'added to cart successfully')
+            toggleCartVisable()
         }
 
     }
@@ -97,12 +99,12 @@ const ProductDetails = () => {
             }
             setQuery(res.data.product.specs)
             setProduct(res.data.product)
-            axios.get(`http://localhost:3000/api/v1/subCategory/${res.data.product.subCategory}`).then((res) => {
-                setSpecs(res.data.subCategory.specs)
-                setLevels((oldLevels)=>({...oldLevels, subCategory:res.data.subCategory.name}))
+            axios.get(`http://localhost:3000/api/v1/subCategory/${res.data.product.subCategory._id}`).then((res) => {
+                setSpecs(()=>[...res.data.subCategory.specs])
             })
         })
-    }, [])
+    }, [location])
+    
 
     return (
         <MainWrapper>

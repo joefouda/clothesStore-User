@@ -1,4 +1,5 @@
 import { List, Empty } from 'antd';
+import { Link } from 'react-router-dom';
 import React, { useContext } from 'react';
 import { DispatchFavoriteContext } from '../contexts/favoriteContext';
 import { FavoriteContext } from '../contexts/favoriteContext';
@@ -37,7 +38,7 @@ const Favorites = () => {
                             }
                         >
                             <List.Item.Meta
-                                title={<a href="https://ant.design">{item.name}</a>}
+                                title={<Link to={`/${item.category.name}/${item.subCategory.name}/${item.model}/${item.name}/${item._id}`} >{item.name}</Link>}
                                 description={`price: ${item.price}`}
                             />
                             {item.specs.reduce((total, ele, index) => {

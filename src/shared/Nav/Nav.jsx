@@ -11,14 +11,15 @@ import axios from 'axios';
 import { Link } from 'react-router-dom'
 import { Drawer, Button, Badge } from 'antd';
 import { CartContext } from '../../contexts/cartContext';
+import { CartVisableContext } from '../../contexts/cartContext';
 import { FavoriteContext } from '../../contexts/favoriteContext';
 
 const Nav = () => {
   const [categories, setCategories] = useState([])
-  const [cartVisable, ToggleCartVisable] = useToggle(false);
   const [userControlVisable, ToggleUserControlVisable] = useToggle(false);
   const [favoriteVisable, ToggleFavoriteVisable] = useToggle(false);
   const cart = useContext(CartContext)
+  const { cartVisable, toggleCartVisable } = useContext(CartVisableContext)
   const favorites = useContext(FavoriteContext)
 
   useEffect(() => {
@@ -40,11 +41,11 @@ const Nav = () => {
           <Button onClick={ToggleFavoriteVisable} icon={<HeartOutlined />} size="large" />
         </Badge>
         <Badge size="default" count={cart.length}>
-          <Button onClick={ToggleCartVisable} icon={<ShoppingCartOutlined />} size="large" />
+          <Button onClick={toggleCartVisable} icon={<ShoppingCartOutlined />} size="large" />
         </Badge>
       </div>
-      <Drawer title="Cart" width='25vw' placement="right" onClose={ToggleCartVisable} visible={cartVisable}>
-        <CartPreview ToggleCartVisable={ToggleCartVisable}/>
+      <Drawer title="Cart" width='25vw' placement="right" onClose={toggleCartVisable} visible={cartVisable}>
+        <CartPreview />
       </Drawer>
 
       <Drawer width='25vw' placement="right" onClose={ToggleUserControlVisable} visible={userControlVisable}>

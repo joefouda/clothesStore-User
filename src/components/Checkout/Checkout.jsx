@@ -1,5 +1,9 @@
+import MainWrapper from "../../shared/main-wrapper"
+
 const Checkout = ()=>{
-    return <h1>checkout page</h1>
+    return (
+        <MainWrapper><h1>checkout page</h1></MainWrapper>
+    )
 }
 
 export default Checkout

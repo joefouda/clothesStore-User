@@ -1,3 +1,11 @@
-.logout-button {
+.control-button {
+    width: 100%;
+    color:black;
+    background-color: white;
     height: auto;
+}
+
+.control-button:hover, .control-button:focus {
+    background-color: rgb(209, 224, 252);
+    color: rgba(0, 0, 0, 0.875);
 }
