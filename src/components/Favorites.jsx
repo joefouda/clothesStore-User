@@ -5,7 +5,7 @@ import { DispatchFavoriteContext } from '../contexts/favoriteContext';
 import { FavoriteContext } from '../contexts/favoriteContext';
 import { NotificationContext } from '../contexts/notificationContext';
 
-const Favorites = () => {
+const Favorites = (props) => {
     const {openNotification} = useContext(NotificationContext)
     const favorites= useContext(FavoriteContext)
     const dispatchFavorite = useContext(DispatchFavoriteContext)
@@ -38,7 +38,7 @@ const Favorites = () => {
                             }
                         >
                             <List.Item.Meta
-                                title={<Link to={`/${item.category.name}/${item.subCategory.name}/${item.model}/${item.name}/${item._id}`} >{item.name}</Link>}
+                                title={<Link to={`/${item.category.name}/${item.subCategory.name}/${item.model}/${item.name}/${item._id}`} onClick={()=>props.ToggleFavoriteVisable()}>{item.name}</Link>}
                                 description={`price: ${item.price}`}
                             />
                             {item.specs.reduce((total, ele, index) => {

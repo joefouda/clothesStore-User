@@ -1,7 +1,13 @@
 .Product-Card {
-    height: 20vh;
+    width: 17vw;
 }
 
 .anticon-heart svg{
     color: rgb(219, 4, 4);
 }
+
+@media screen and (max-width: 700px) {
+    .Product-Card {
+        width: 100%;
+    }
+  }

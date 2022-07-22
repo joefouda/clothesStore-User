@@ -1,0 +1,16 @@
+.favorites-container {
+    display: grid;
+    grid-template-columns: repeat(4,auto);
+    justify-content: center;
+    gap: 2vw;
+    height: 100%;
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-y: scroll;
+}
+
+@media screen and (max-width: 700px) {
+    .favorites-container {
+        grid-template-columns: 1fr 1fr;
+    }
+  }

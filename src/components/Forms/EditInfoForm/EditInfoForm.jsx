@@ -1,14 +1,15 @@
-import './Signup.css'
-import MainWrapper from "../../shared/main-wrapper"
-import { useNavigate } from 'react-router-dom'
+import './EditInfoForm.css'
+import axios from 'axios'
 import { Form, Input, Button, Cascader, Divider } from 'antd'
-import authentication from '../../auth/authentication';
-import residences from "../../shared/residences"
-import {NotificationContext} from "../../contexts/notificationContext"
-import { useContext } from 'react';
+import residences from "../../../shared/residences"
+import { NotificationContext } from '../../../contexts/notificationContext';
+import { UserContext } from '../../../contexts/userContext';
+import { DispatchUserContext } from '../../../contexts/userContext';
+import { useContext, useEffect } from 'react';
 
-const Signup = () => {
-    const navigate = useNavigate()
+const EditInfoForm = (props) => {
+    const user = useContext(UserContext)
+    const dispatchUser = useContext(DispatchUserContext)
     const { openNotification } = useContext(NotificationContext)
     const onFinish = (values) => {
         let address = {
@@ -22,32 +23,46 @@ const Signup = () => {
             phone: `+20${values.phone}`,
             address
         }
-        authentication.Signup(data).then(res=>{
-            console.log(res)
-            navigate('/login')
-        }).catch(error=>{
-            openNotification('error', error.message)
+        axios.put('http://localhost:3000/api/v1/user/update', data,{
+            headers:{
+                'Authorization': localStorage.getItem('token')
+            }
+        }).then(res=>{
+            dispatchUser({type:'SET', user:res.data.user})
+            props.toggleEditMode()
+            openNotification('success', "your information updated successfully")
         })
     }
-    const [signupForm] = Form.useForm();
+
+    const handleCancel = ()=>{
+        profileInfoForm.resetFields()
+        props.toggleEditMode()
+    }
+    const [profileInfoForm] = Form.useForm();
+
+    useEffect(()=>{
+        profileInfoForm.setFieldsValue({
+            name:user.name,
+            email:user.email,
+            phone:user.phone.slice(3),
+            address: {
+                street:user.address.street,
+                details:user.address.details,
+                countryProvince:[user.address.country, user.address.province]
+            }
+        })
+    }, [])
     return (
-        <MainWrapper>
             <Form
-                className='signup-form'
-                form={signupForm}
-                wrapperCol={{
-                    span: 24,
-                }}
-                initialValues={{
-                    remember: true,
-                }}
+                className='editform'
+                form={profileInfoForm}
+                labelCol={{ span: 1 }}
+                wrapperCol={{ span: 23 }}
                 onFinish={onFinish}
                 autoComplete="off"
             >
-                <h1>Create your Account</h1>
-                <p>Create your Account to optain website full features</p>
-                <Divider />
                 <Form.Item
+                    label="Name"
                     name="name"
                     rules={[
                         {
@@ -57,7 +72,9 @@ const Signup = () => {
                 >
                     <Input placeholder="Name" size="large" allowClear />
                 </Form.Item>
+                <Divider />
                 <Form.Item
+                    label="Email"
                     name="email"
                     rules={[
                         {
@@ -70,41 +87,9 @@ const Signup = () => {
                 >
                     <Input placeholder="Email" size="large" allowClear />
                 </Form.Item>
+                <Divider />
                 <Form.Item
-                    name="password"
-                    rules={[
-                        {
-                            required: true,
-                        },
-                        {
-                            min: 8
-                        }
-                    ]}
-                >
-                    <Input.Password placeholder="Password" size="large" allowClear />
-                </Form.Item>
-                <Form.Item
-                    name="confirm"
-                    dependencies={['password']}
-                    hasFeedback
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please confirm your password!',
-                        },
-                        ({ getFieldValue }) => ({
-                            validator(_, value) {
-                                if (!value || getFieldValue('password') === value) {
-                                    return Promise.resolve();
-                                }
-                                return Promise.reject(new Error('The two passwords that you entered do not match!'));
-                            },
-                        }),
-                    ]}
-                >
-                    <Input.Password placeholder="Confirm Password" size="large"/>
-                </Form.Item>
-                <Form.Item
+                    label="Phone"
                     name="phone"
                     rules={[
                         {
@@ -122,7 +107,8 @@ const Signup = () => {
                 >
                     <Input placeholder="Phone" size="large" addonBefore="+20" />
                 </Form.Item>
-                <Form.Item>
+                <Divider />
+                <Form.Item label="Address">
                     <Input.Group compact>
                         <Form.Item
                             style={{ width: '20%' }}
@@ -149,15 +135,16 @@ const Signup = () => {
                         </Form.Item>
                     </Input.Group>
                 </Form.Item>
-                <Form.Item >
-                    <Button className="signup-signup-button" type="primary" htmlType="submit" size='large'>
-                        Signup
+                <div className='editform-actions'>
+                    <Button className="editform-cancel-button" type="primary" size='large' onClick={handleCancel}>
+                        Cancel
                     </Button>
-                    <p>already have an account ? <Button className="signup-login-button" type="link" onClick={()=>navigate('/login')}>Login</Button></p>
-                </Form.Item>
+                    <Button className="editform-save-button" type="primary" htmlType="submit" size='large'>
+                        Save Changes
+                    </Button>
+                </div>
             </Form>
-        </MainWrapper>
     )
 }
 
-export default Signup
+export default EditInfoForm

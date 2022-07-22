@@ -6,14 +6,17 @@ import authentication from '../../auth/authentication';
 import { useNavigate } from 'react-router-dom';
 import { DispatchContext } from '../../contexts/cartContext';
 import { DispatchFavoriteContext } from '../../contexts/favoriteContext';
+import { DispatchUserContext } from '../../contexts/userContext';
 import { useContext } from 'react';
 
 const AuthenticatedContent = (props)=>{
+    const dispatchUser = useContext(DispatchUserContext)
     const dispatch = useContext(DispatchContext)
     const dispatchFavorites = useContext(DispatchFavoriteContext)
     const navigate = useNavigate()
     const handleLogout = ()=>{
         localStorage.clear()
+        dispatchUser({type:'CLEAR'})
         dispatch({type:'CLEAR'})
         dispatchFavorites({type:'CLEAR'})
         props.ToggleUserControlVisable()

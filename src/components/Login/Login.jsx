@@ -7,11 +7,13 @@ import { DispatchFavoriteContext } from '../../contexts/favoriteContext';
 import { FavoriteContext } from '../../contexts/favoriteContext';
 import { CartContext } from '../../contexts/cartContext';
 import { DispatchContext } from '../../contexts/cartContext';
+import { DispatchUserContext } from '../../contexts/userContext';
 import { useContext } from 'react';
 import axios from 'axios';
 
 const Login = (props)=>{
     const { openNotification } = useContext(NotificationContext)
+    const dispatchUser = useContext(DispatchUserContext)
     const favorites = useContext(FavoriteContext)
     const dispatchFavorites = useContext(DispatchFavoriteContext)
     const cart = useContext(CartContext)
@@ -23,6 +25,8 @@ const Login = (props)=>{
                 openNotification('error', "Invalid Username or Password")
             } else {
                 localStorage.setItem('token', res.data.token)
+                console.log(res.data.user)
+                dispatchUser({type:'SET',user:res.data.user})
 
                 // sync user favorites from localstorage with backend user favorites on login
                 favorites.length !== 0? favorites.map(item=>{

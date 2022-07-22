@@ -16,7 +16,7 @@ const ProductCard = (props) => {
   const {category, subCategory} = useParams()
   const navigate = useNavigate()
   const handleNavigate = ()=>{
-    navigate(`/${category}/${subCategory}/${props.product.model}/${props.product.name}/${props.product._id}`)
+    navigate(`/${category || props.product.category.name}/${subCategory || props.product.subCategory.name}/${props.product.model}/${props.product.name}/${props.product._id}`)
   }
 
   const handleAddToFavorites = ()=>{
@@ -32,8 +32,8 @@ const ProductCard = (props) => {
   return (
   <Card
     hoverable
-    style={{ maxWidth: '17vw' }}
     cover={<img alt={props.product.name} src={props.product.photo} />}
+    className="Product-Card"
     actions={[
       <EyeOutlined onClick={handleNavigate}/>,
       favorites.findIndex(ele=>ele._id === props.product._id) === -1?<HeartOutlined onClick={handleAddToFavorites}/>:<HeartFilled onClick={handleRemoveFromFavorites}/>

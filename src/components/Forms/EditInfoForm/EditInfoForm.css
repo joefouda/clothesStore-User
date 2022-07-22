@@ -1,0 +1,31 @@
+.editform {
+    height: 100%;
+    position: relative;
+}
+
+.editform-actions {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.editform-cancel-button {
+    color: rgb(63, 63, 63);
+    background-color: rgb(206, 206, 206);
+}
+
+.editform-cancel-button:hover, .editform-cancel-button:focus {
+    background-color: rgb(223, 223, 223);
+    color: rgb(63, 63, 63);
+}
+
+.editform-save-button {
+    color: white;
+    background-color: rgb(15, 89, 224);
+    margin-left: 1vw;
+}
+
+.editform-save-button:hover, .editform-save-button:focus {
+    background-color: rgb(58, 117, 227);
+    color: white;
+}

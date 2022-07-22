@@ -1,5 +1,5 @@
-import './App.css';
 import 'antd/dist/antd.css'
+import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Nav from './shared/Nav/Nav';
 import { Layout } from 'antd';
@@ -16,44 +16,47 @@ import { LogInGuard, LogOutGuard, Redirect } from './auth/authGuards';
 import CartProvider from './contexts/cartContext';
 import FavoriteProvider from './contexts/favoriteContext';
 import NotificationProvider from './contexts/notificationContext';
+import UserProvider from './contexts/userContext';
 
 const { Footer } = Layout;
 
 function App() {
   return (
     <NotificationProvider>
-      <FavoriteProvider>
-        <CartProvider>
-          <BrowserRouter>
-            <MayRender>
-              <Nav />
-            </MayRender>
-            <Routes>
-              <Route path='/login' element={<LogOutGuard />}>
-                <Route path="/login" element={<LoginPage />} />
-              </Route>
-              <Route path='/signup' element={<LogOutGuard />}>
-                <Route path="/signup" element={<SignupPage />} />
-              </Route>
-              <Route path='/' element={<HomePage />} />
-              <Route path='/filter/:category' element={<FilterPage />} />
-              <Route path='/filter/:category/:subCategory' element={<FilterPage />} />
-              <Route path='/:category/:subCategory/:model/:product/:id' element={<ProductDetailsPage />} />
-              <Route path='/profile' element={<LogInGuard />}>
-                <Route path='/profile' element={<UserProfilePage />} />
-              </Route>
-              <Route path='/checkout' element={<LogInGuard />}>
-                <Route path='/checkout' element={<CheckoutPage />} />
-              </Route>
-              <Route path="*" element={<Redirect />} />
-              <Route path="/404" element={<PageNotFound />} />
-            </Routes>
-            <MayRender>
-              <Footer style={{ textAlign: 'center' }}>BUTRO'N ©2022 Created by joeFouda</Footer>
-            </MayRender>
-          </BrowserRouter>
-        </CartProvider>
-      </FavoriteProvider>
+      <UserProvider>
+        <FavoriteProvider>
+          <CartProvider>
+            <BrowserRouter>
+              <MayRender>
+                <Nav />
+              </MayRender>
+              <Routes>
+                <Route path='/login' element={<LogOutGuard />}>
+                  <Route path="/login" element={<LoginPage />} />
+                </Route>
+                <Route path='/signup' element={<LogOutGuard />}>
+                  <Route path="/signup" element={<SignupPage />} />
+                </Route>
+                <Route path='/' element={<HomePage />} />
+                <Route path='/filter/:category' element={<FilterPage />} />
+                <Route path='/filter/:category/:subCategory' element={<FilterPage />} />
+                <Route path='/:category/:subCategory/:model/:product/:id' element={<ProductDetailsPage />} />
+                <Route path='/profile' element={<LogInGuard />}>
+                  <Route path='/profile' element={<UserProfilePage />} />
+                </Route>
+                <Route path='/checkout' element={<LogInGuard />}>
+                  <Route path='/checkout' element={<CheckoutPage />} />
+                </Route>
+                <Route path="*" element={<Redirect />} />
+                <Route path="/404" element={<PageNotFound />} />
+              </Routes>
+              <MayRender>
+                <Footer style={{ textAlign: 'center' }}>BUTRO'N ©2022 Created by joeFouda</Footer>
+              </MayRender>
+            </BrowserRouter>
+          </CartProvider>
+        </FavoriteProvider>
+      </UserProvider>
     </NotificationProvider>
   );
 }

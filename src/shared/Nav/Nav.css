@@ -11,6 +11,10 @@
     gap: 2vw;
 }
 
+.ant-drawer-content-wrapper{
+    width: 25vw !important
+}
+
 
 .ant-btn {
     border:none;
@@ -39,5 +43,8 @@
     }
     .Nav-start {
         flex-direction: column;
+    }
+    .ant-drawer-content-wrapper{
+        width: 100vw !important
     }
   }

@@ -44,15 +44,15 @@ const Nav = () => {
           <Button onClick={toggleCartVisable} icon={<ShoppingCartOutlined />} size="large" />
         </Badge>
       </div>
-      <Drawer title="Cart" width='25vw' placement="right" onClose={toggleCartVisable} visible={cartVisable}>
+      <Drawer title="Cart" placement="right" onClose={toggleCartVisable} visible={cartVisable}>
         <CartPreview />
       </Drawer>
 
-      <Drawer width='25vw' placement="right" onClose={ToggleUserControlVisable} visible={userControlVisable}>
+      <Drawer placement="right" onClose={ToggleUserControlVisable} visible={userControlVisable}>
         <UserControl ToggleUserControlVisable={ToggleUserControlVisable} />
       </Drawer>
 
-      <Drawer width='25vw' placement="right" onClose={ToggleFavoriteVisable} visible={favoriteVisable}>
+      <Drawer placement="right" onClose={ToggleFavoriteVisable} visible={favoriteVisable}>
         <Favorites ToggleFavoriteVisable={ToggleFavoriteVisable} />
       </Drawer>
     </div>

@@ -1,0 +1,18 @@
+.profileinfo-container {
+    position: relative;
+    height: 100%;
+}
+
+.editform-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height:auto;
+    color: white;
+    background-color: rgb(15, 89, 224);
+}
+
+.editform-button:hover, .editform-button:focus {
+    background-color: rgb(58, 117, 227);
+    color: white;
+}
