@@ -67,9 +67,6 @@ const CartPreview = () => {
                     <span>LE {cart.reduce((total, ele) => (total + ele.orderPrice), 0)}</span>
                 </div>
                 <div className='order-actions'>
-                    <Button className='view-button'>
-                        View Cart
-                    </Button>
                     <Button className='checkout-button' onClick={handleCheckout}>
                         Checkout
                     </Button>

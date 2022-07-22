@@ -18,19 +18,10 @@
 .checkout-button {
     background-color: black;
     color: white;
+    width: 100%;
 }
 
 .checkout-button:hover, .checkout-button:focus {
     color: white;
     background-color: rgba(0, 0, 0, 0.668);
-}
-
-.view-button {
-    color: black;
-    background-color: white;
-}
-
-.view-button:hover, .view-button:focus {
-    color: rgba(0, 0, 0, 0.575);
-    background-color: white;
 }

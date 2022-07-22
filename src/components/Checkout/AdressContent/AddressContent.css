@@ -1,0 +1,39 @@
+.address-content {
+    position:relative;
+    word-wrap: break-word;
+    display:flex;
+    flex-direction:column;
+    height: -webkit-fill-available;
+}
+
+.edit-address-form {
+    display:flex;
+    flex-direction:column;
+    height: -webkit-fill-available;
+}
+
+.address-content-actions-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: end;
+    padding-bottom: 2vh;
+}
+
+.address-content-edit-button {
+    margin-top: 5px;
+    height: auto;
+    align-self: flex-end;
+    color: white;
+    background-color: #1890ff;
+}
+
+.address-content-edit-button:hover,  .address-content-edit-button:focus{
+    background-color: #1890ff;
+    color: white;
+}
+
+.address-content-details {
+    background-color: rgb(247, 247, 247);
+    padding: 2vh;
+    min-height: 10vh;
+}
