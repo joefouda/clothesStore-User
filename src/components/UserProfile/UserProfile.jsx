@@ -4,8 +4,7 @@ import ProfileInfo from './ProfileInfo/ProfileInfo'
 import ProfilePayment from './ProfilePayment/ProfilePayment'
 import ProfileOrders from './ProfileOrders/ProfileOrders'
 import ProfileFavorites from './ProfileFavorites/ProfileFavorites'
-import { FavoriteContext } from "../../contexts/favoriteContext"
-import React, { useContext, useState } from "react"
+import React, { useState } from "react"
 import { Layout, Menu } from 'antd';
 import { UserOutlined, HeartOutlined, UnorderedListOutlined, DollarCircleOutlined } from '@ant-design/icons';
 const { Content, Sider } = Layout
@@ -28,8 +27,7 @@ const items = [
 ];
 
 const UserProfile = () => {
-    const favorites = useContext(FavoriteContext)
-    const [selectedKey, setSelectedKey] = useState('Personal Info')
+    const [selectedKey, setSelectedKey] = useState('Orders')
     const handleClick = (e) => {
         setSelectedKey(e.key)
     }

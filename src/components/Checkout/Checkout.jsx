@@ -1,27 +1,45 @@
 import './Checkout.css'
-import { Button, message, Steps } from 'antd';
+import { Button, Steps } from 'antd';
 import { ArrowRightOutlined, ArrowLeftOutlined } from '@ant-design/icons'
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom'
 import MainWrapper from '../../shared/main-wrapper';
 import AddressContent from './AdressContent/AddressContent'
+import OrderItemsContent from './OrderItemsContent/OrderItemsContent'; 
+import PaymentMethodContent from './PaymentMethodContent/PaymentMethodContent';
+import { UserContext } from '../../contexts/userContext';
+import { DispatchUserContext } from '../../contexts/userContext';
+import { CartContext } from '../../contexts/cartContext';
+import { DispatchContext } from '../../contexts/cartContext';
+import axios from 'axios'
+import { NotificationContext } from '../../contexts/notificationContext';
 const { Step } = Steps;
-const steps = [
-    {
-        title: 'Shipping Address',
-        content: <AddressContent />,
-    },
-    {
-        title: 'Order Items',
-        content: 'Second-content',
-    },
-    {
-        title: 'Payment Method',
-        content: 'Last-content',
-    },
-];
 
 const Checkout = () => {
+    const { openNotification } = useContext(NotificationContext)
+    const navigate = useNavigate()
+    const user = useContext(UserContext)
+    const dispatchUser = useContext(DispatchUserContext)
+    const cart = useContext(CartContext)
+    const dispatchCart = useContext(DispatchContext)
     const [current, setCurrent] = useState(0);
+    const [paymentMethod, setPaymentMethod] = useState('Cash On Delivery')
+    const [shippingAddress, setShippingAddress] = useState(user.address)
+
+    const steps = [
+        {
+            title: 'Shipping Address',
+            content: <AddressContent setShippingAddress={setShippingAddress} shippingAddress={shippingAddress} />,
+        },
+        {
+            title: 'Order Items',
+            content: <OrderItemsContent />,
+        },
+        {
+            title: 'Payment Method',
+            content: <PaymentMethodContent setPaymentMethod={setPaymentMethod} paymentMethod={paymentMethod}/>,
+        },
+    ];
 
     const next = () => {
         setCurrent(current + 1);
@@ -30,6 +48,27 @@ const Checkout = () => {
     const prev = () => {
         setCurrent(current - 1);
     };
+
+    const handleCheckout = ()=> {
+        let order = {
+            orderItems : [...cart],
+            shippingAddress,
+            paymentMethod,
+            grandTotal:20 +cart.reduce((st,next)=>st+next.orderPrice,0)
+        }
+        console.log(order)
+        axios.post('http://localhost:3000/api/v1/order',order, {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        }).then(res=> {
+            console.log(res)
+            dispatchUser({type:'SET', user:res.data.user})
+            dispatchCart({type:'PERMENANTCLEAR'})
+            openNotification('success', 'Your order is placed succesfully')
+            navigate('/profile')
+        })
+    }
 
     return (
         <MainWrapper>
@@ -51,7 +90,7 @@ const Checkout = () => {
                         </Button>
                     )}
                     {current === steps.length - 1 && (
-                        <Button className='next-step-button' onClick={() => message.success('Processing complete!')}>
+                        <Button className='next-step-button' onClick={handleCheckout}>
                             Checkout
                         </Button>
                     )}

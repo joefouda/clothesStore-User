@@ -1,0 +1,10 @@
+.payment {
+    display: block;
+    padding: 2vh 2vw;
+    border-radius: 10px;
+}
+
+.selected-payment {
+    background-color: #f7f7f7;
+    border: 1px solid #a0a0a0;
+}

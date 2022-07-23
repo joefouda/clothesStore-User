@@ -1,15 +1,13 @@
 import './AddressContent.css'
 import { Form, Input, Button, Cascader, Divider  } from 'antd'
 import residences from "../../../shared/residences"
-import { UserContext } from '../../../contexts/userContext';
 import { useContext, useEffect } from 'react';
 import { NotificationContext } from '../../../contexts/notificationContext';
 import useToggle from '../../../hooks/useToggleState';
 
-const EditInfoForm = () => {
+const EditInfoForm = (props) => {
     const [editMode, toggleEditMode] = useToggle(false)
     const { openNotification } = useContext(NotificationContext)
-    const user = useContext(UserContext)
     const onFinish = (values) => {
         let address = {
             country: values.address.countryProvince[0],
@@ -18,7 +16,7 @@ const EditInfoForm = () => {
             details: values.address.details
         }
 
-        console.log(address)
+        props.setShippingAddress(()=>({...address}))
         toggleEditMode()
         openNotification('success', 'Address saved successfully')
     }
@@ -28,9 +26,9 @@ const EditInfoForm = () => {
     useEffect(() => {
         selectAddressForm.setFieldsValue({
             address: {
-                street: user.address.street,
-                details: user.address.details,
-                countryProvince: [user.address.country, user.address.province]
+                street: props.shippingAddress.street,
+                details: props.shippingAddress.details,
+                countryProvince: [props.shippingAddress.country, props.shippingAddress.province]
             }
         })
     }, [])
@@ -77,24 +75,24 @@ const EditInfoForm = () => {
                 <div>
                     <h2 style={{display:'inline'}}>Country </h2>
                     <Divider type="vertical"/>
-                    <h3 style={{display:'inline'}}>{user.address.country}</h3> 
+                    <h3 style={{display:'inline'}}>{props.shippingAddress.country}</h3> 
                 </div>
                 <Divider />
                 <div>
                     <h2 style={{display:'inline'}}>Province </h2>
                     <Divider type="vertical"/>
-                    <h3 style={{display:'inline'}}>{user.address.province}</h3> 
+                    <h3 style={{display:'inline'}}>{props.shippingAddress.province}</h3> 
                 </div>
                 <Divider />
                 <div>
                     <h2 style={{display:'inline'}}>Street </h2>
                     <Divider type="vertical"/>
-                    <h3 style={{display:'inline'}}>{user.address.street}</h3> 
+                    <h3 style={{display:'inline'}}>{props.shippingAddress.street}</h3> 
                 </div>
                 <Divider />
                 <div>
                     <h2>more Details :</h2>
-                    <div className='address-content-details'>{user.address.details}</div> 
+                    <div className='address-content-details'>{props.shippingAddress.details}</div> 
                 </div>
                 <div className='address-content-actions-container'>
                     <Button className='address-content-edit-button' onClick={toggleEditMode}>

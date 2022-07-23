@@ -18,7 +18,6 @@ const reducer = (state, action) => {
                         'Authorization': localStorage.getItem('token')
                     }
                 }).then(res=>{
-                    console.log(res)
                     return res.data.cart
                 })
             }
@@ -26,6 +25,15 @@ const reducer = (state, action) => {
         case 'MERGE':
             return action.cart;
         case 'CLEAR':
+            return [];
+        case 'PERMENANTCLEAR':
+            axios.delete(`http://localhost:3000/api/v1/cart/empty`,{
+                headers:{
+                    'Authorization': localStorage.getItem('token')
+                }
+            }).then(res=>{
+                console.log(res)
+            })
             return [];
         default:
             return state
