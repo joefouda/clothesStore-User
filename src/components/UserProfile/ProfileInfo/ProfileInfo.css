@@ -1,18 +1,25 @@
 .profileinfo-container {
-    position: relative;
     height: 100%;
+    display:flex;
+    flex-direction:column;
+    height: -webkit-fill-available;
 }
 
-.editform-button {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    height:auto;
+.profile-address-actions-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: end;
+    padding-bottom: 2vh;
+}
+
+.profile-address-edit-button {
+    margin-top: 5px;
+    align-self: flex-end;
     color: white;
-    background-color: rgb(15, 89, 224);
+    background-color: #1890ff;
 }
 
-.editform-button:hover, .editform-button:focus {
-    background-color: rgb(58, 117, 227);
+.profile-address-edit-button:hover,  .profile-address-edit-button:focus{
+    background-color: #1890ff;
     color: white;
 }

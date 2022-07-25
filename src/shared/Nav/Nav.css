@@ -12,39 +12,55 @@
 }
 
 .ant-drawer-content-wrapper{
-    width: 25vw !important
+    width: 30vw !important
 }
 
 
 .ant-btn {
     border:none;
-    font-size:1.2rem;
-    font-weight: bold;
-    height: 100%
 }
 
-.Nav-buttons .ant-btn{
-    color: #6f6c6c;
+.Nav-buttons{
+    color: black;
     background: #fff;
+    display: flex;
+    gap: 1vw;
 }
 
 .Nav-buttons  .ant-btn:hover, .ant-btn:focus {
-    color: #6f6c6c;
+    color: black;
     background: #fff;
 }
 
+.Nav-icon {
+    font-size: 25px;
+}
+
+.Nav-links {
+    display: flex;
+    align-items: center;
+}
+
 .Nav-links .ant-btn:hover, .ant-btn:focus {
-    color: #6f6c6c;
+    color: black;
     background: #fff;
 }
+
+.Nav-mobile-nav {
+    display: none;
+}
+
 @media screen and (max-width: 700px) {
-    .Nav{
-        flex-direction: column;
-    }
-    .Nav-start {
-        flex-direction: column;
-    }
     .ant-drawer-content-wrapper{
-        width: 100vw !important
+        width: 80vw !important
+    }
+    .Nav-mobile-nav {
+        display: flex;
+    }
+    .Nav-normal-nav {
+        display: none;
+    }
+    .Nav-buttons{
+        gap: 2vw;
     }
   }

@@ -1,10 +1,11 @@
 import './Nav.css'
-import PopOver from '../../components/PopOver'
+import PopOver from '../../components/popover/PopOver'
 import img from '../../assets/logo.jpg'
 import CartPreview from '../../components/Cart/Cart';
 import UserControl from '../../components/UserControl/UserControl';
 import Favorites from '../../components/Favorites';
-import { ShoppingCartOutlined, UserOutlined, HeartOutlined } from '@ant-design/icons';
+import MobileList from './MobileList/MobileList';
+import { ShoppingCartOutlined, UserOutlined, HeartOutlined, UnorderedListOutlined, SearchOutlined } from '@ant-design/icons';
 import { useEffect, useState, useContext } from 'react';
 import useToggle from '../../hooks/useToggleState';
 import axios from 'axios';
@@ -17,6 +18,8 @@ import { FavoriteContext } from '../../contexts/favoriteContext';
 const Nav = () => {
   const [categories, setCategories] = useState([])
   const [userControlVisable, ToggleUserControlVisable] = useToggle(false);
+  const [mobileListVisable, toggleMobileListVisable] = useToggle(false);
+  const [mobileSearchVisable, ToggleMobileSearchVisable] = useToggle(false);
   const [favoriteVisable, ToggleFavoriteVisable] = useToggle(false);
   const cart = useContext(CartContext)
   const { cartVisable, toggleCartVisable } = useContext(CartVisableContext)
@@ -29,19 +32,24 @@ const Nav = () => {
   }, [])
   return (
     <div className='Nav'>
-      <div className='Nav-start'>
+      <div className='Nav-mobile-nav Nav-buttons'>
+        <UnorderedListOutlined className='Nav-icon' onClick={toggleMobileListVisable} />
+        <SearchOutlined className='Nav-icon' onClick={ToggleMobileSearchVisable} />
+      </div>
+        <div className='Nav-start'>
         <Link to='/'><img src={img} style={{ maxWidth: '132px' }} /></Link>
-        <div className="Nav-links">
+        <div className="Nav-normal-nav Nav-links">
           {categories.map(category => <PopOver key={category._id} category={category} title={category.name} />)}
         </div>
       </div>
       <div className='Nav-buttons'>
-        <Button onClick={ToggleUserControlVisable} icon={<UserOutlined />} size="large" />
+        <SearchOutlined className='Nav-normal-nav Nav-icon' onClick={ToggleMobileSearchVisable} />
+        <UserOutlined className='Nav-normal-nav Nav-icon' onClick={ToggleUserControlVisable} />
         <Badge size="default" count={favorites.length} style={{zIndex:1}}>
-          <Button onClick={ToggleFavoriteVisable} icon={<HeartOutlined />} size="large" />
+          <HeartOutlined className='Nav-icon' onClick={ToggleFavoriteVisable} />
         </Badge>
         <Badge size="default" count={cart.length}>
-          <Button onClick={toggleCartVisable} icon={<ShoppingCartOutlined />} size="large" />
+          <ShoppingCartOutlined className='Nav-icon' onClick={toggleCartVisable} />
         </Badge>
       </div>
       <Drawer title="Cart" placement="right" onClose={toggleCartVisable} visible={cartVisable}>
@@ -55,6 +63,15 @@ const Nav = () => {
       <Drawer placement="right" onClose={ToggleFavoriteVisable} visible={favoriteVisable}>
         <Favorites ToggleFavoriteVisable={ToggleFavoriteVisable} />
       </Drawer>
+
+      <Drawer placement="left" onClose={toggleMobileListVisable} visible={mobileListVisable}>
+        <MobileList toggleMobileListVisable={toggleMobileListVisable} categories={categories}/>
+      </Drawer>
+
+      <Drawer placement="left" onClose={ToggleMobileSearchVisable} visible={mobileSearchVisable}>
+        <Favorites ToggleMobileSearchVisable={ToggleMobileSearchVisable} />
+      </Drawer>
+
     </div>
   )
 };

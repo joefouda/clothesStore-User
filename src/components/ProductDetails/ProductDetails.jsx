@@ -46,7 +46,6 @@ const ProductDetails = () => {
 
         axios.put(`http://localhost:3000/api/v1/product/specs`, {model:levels.model,specs:newQuery}).then((res) => {
             if(res.data.message === 'notfound'){
-                setProduct({...tempProduct})
                 navigate(`/${levels.category}/${levels.subCategory}/${levels.model}/${tempProduct.name}/${tempProduct._id}`)
             } else {
                 setQuery(res.data.product.specs)
@@ -94,22 +93,23 @@ const ProductDetails = () => {
     
     useEffect(() => {
         axios.get(`http://localhost:3000/api/v1/product/${levels.id}`).then((res) => {
-            if (res.data.message === "internal server error") {
-                navigate(`/filter/${levels.category}/${levels.subCategory}`)
+            if(res.data.message === 'internal server error') {
+                setProduct({...tempProduct})
+            } else {
+                setQuery(res.data.product.specs)
+                setProduct(res.data.product)
+                axios.get(`http://localhost:3000/api/v1/subCategory/${res.data.product.subCategory._id}`).then((res) => {
+                    setSpecs(()=>[...res.data.subCategory.specs])
+                })
             }
-            setQuery(res.data.product.specs)
-            setProduct(res.data.product)
-            axios.get(`http://localhost:3000/api/v1/subCategory/${res.data.product.subCategory._id}`).then((res) => {
-                setSpecs(()=>[...res.data.subCategory.specs])
-            })
         })
     }, [location])
     
 
     return (
         <MainWrapper>
-            <div style={{ display: 'flex' }}>
-                <div style={{display:'flex',flexDirection:'column', gap:'1vh', alignItems:'center'}}>
+            <div className='product-details-container'>
+                <div className='product-details-leftside'>
                     <Image
                         style={{ width: 'auto', height: '70vh' }}
                         src={product.photo}

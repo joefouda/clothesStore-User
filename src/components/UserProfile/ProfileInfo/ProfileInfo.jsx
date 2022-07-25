@@ -18,7 +18,9 @@ const ProfileInfo = () => {
             <h1>Phone : {user.phone}</h1>
             <Divider />
             <h1>Address : {user.address.country} / {user.address.province} / {user.address.street} / {user.address.details}</h1>
-            <Button className='editform-button' onClick={toggleEditMode}>Edit</Button>
+            <div className='profile-address-actions-container'>
+                <Button className='profile-address-edit-button' onClick={toggleEditMode}>Edit</Button>
+            </div>
         </div>
     )
 }

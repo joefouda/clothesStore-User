@@ -1,6 +1,7 @@
-import { Button, Popover } from 'antd';
-import useToggle from '../hooks/useToggleState';
-import CategoryHoverContent from './CategoryHoverContent/CategoryHoverContent'
+import './Popover.css'
+import { Popover } from 'antd';
+import useToggle from '../../hooks/useToggleState';
+import CategoryHoverContent from '../CategoryHoverContent/CategoryHoverContent'
 
 const PopOver = (props) => {
   const [hovered, ToggleHovered] = useToggle(false);
@@ -14,7 +15,7 @@ const PopOver = (props) => {
       placement="bottomRight"
       onVisibleChange={ToggleHovered}
     >   
-        <Button style={{fontFamily:'Source Sans Pro, sans-serif'}}>{props.title}</Button>
+        <h1 className='nav-link' style={{fontFamily:'Source Sans Pro, sans-serif'}}>{props.title}</h1>
     </Popover>
   );
 };

@@ -7,9 +7,7 @@
 
 @media screen and (max-width: 700px) {
     .Filter-Products {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        justify-content: center;
-        gap: 2vw;
+        grid-template-columns: repeat(1,auto);
+        gap: 1vw;
     }
   }

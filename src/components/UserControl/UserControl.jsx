@@ -1,5 +1,5 @@
 import './UserControl.css'
-import { Button, Divider } from 'antd';
+import { Button } from 'antd';
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons'
 import Login from '../Login/Login';
 import authentication from '../../auth/authentication';
@@ -9,34 +9,33 @@ import { DispatchFavoriteContext } from '../../contexts/favoriteContext';
 import { DispatchUserContext } from '../../contexts/userContext';
 import { useContext } from 'react';
 
-const AuthenticatedContent = (props)=>{
+const AuthenticatedContent = (props) => {
     const dispatchUser = useContext(DispatchUserContext)
     const dispatch = useContext(DispatchContext)
     const dispatchFavorites = useContext(DispatchFavoriteContext)
     const navigate = useNavigate()
-    const handleLogout = ()=>{
+    const handleLogout = () => {
         localStorage.clear()
-        dispatchUser({type:'CLEAR'})
-        dispatch({type:'CLEAR'})
-        dispatchFavorites({type:'CLEAR'})
+        dispatchUser({ type: 'CLEAR' })
+        dispatch({ type: 'CLEAR' })
+        dispatchFavorites({ type: 'CLEAR' })
         props.ToggleUserControlVisable()
         navigate('/login')
     }
     return (
-        <>
-            <Button className='control-button' icon={<UserOutlined />} onClick={()=>{
-                navigate('/profile')
+        <div className='list-actions'>
+            <Button icon={<UserOutlined />} className='list-actions-button' onClick={() => {
                 props.ToggleUserControlVisable()
+                navigate('/profile')
             }}>Profile</Button>
-            <Divider />
-            <Button className='control-button' icon={<LogoutOutlined />} onClick={handleLogout}>Logout</Button>
-        </>
+            <Button icon={<LogoutOutlined />} className='list-actions-button' onClick={handleLogout}>Logout</Button>
+        </div>
     )
 }
 
 const UserControl = (props) => {
     return (
-        authentication.isAuthinticated()?<AuthenticatedContent ToggleUserControlVisable={props.ToggleUserControlVisable} />:<Login ToggleUserControlVisable={props.ToggleUserControlVisable}/>
+        authentication.isAuthinticated() ? <AuthenticatedContent ToggleUserControlVisable={props.ToggleUserControlVisable} /> : <Login ToggleUserControlVisable={props.ToggleUserControlVisable} />
     )
 };
 

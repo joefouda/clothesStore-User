@@ -6,24 +6,8 @@
 .steps-content {
   position: relative;
   border-radius: 5px;
-  box-shadow: 1px 0px 5px #1890ff;
   margin: 2vh 0;
-  border: 1px solid #1890ff;
   padding: 4vh 2vw 0 2vw;
-  height: calc(100vh - 40vh);
-  -ms-overflow-style: none; /* for Internet Explorer, Edge */
-  scrollbar-width: none; /* for Firefox */
-  overflow-y: scroll;
-}
-
-.steps-content::-webkit-scrollbar {
-  width: 12px;               /* width of the entire scrollbar */
-}
-
-.steps-content::-webkit-scrollbar-thumb {
-  background-color: black;    /* color of the scroll thumb */
-  border-radius: 20px;       /* roundness of the scroll thumb */
-  border: 3px solid white;  /* creates padding around scroll thumb */
 }
 
 .next-step-button {
@@ -44,4 +28,12 @@
 
 .previous-step-button:hover, .previous-step-button:focus {
   color: rgba(0, 0, 0, 0.738);
+}
+
+
+@media screen and (max-width: 700px) {
+  .checkout-container {
+    margin: auto;
+    width: 86vw;
+  }
 }

@@ -1,0 +1,17 @@
+.form-container {
+    padding: 5vh 2vw;
+    width: 50vw;
+    margin: auto;
+    border-radius: 20px;
+    box-shadow: 1px 0px 10px black;
+}
+
+@media screen and (max-width: 700px) {
+    .form-container {
+        border-radius: 0;
+        padding: 0 0;
+        width: 86vw;
+        box-shadow: 0 0 0;
+    }
+    
+}

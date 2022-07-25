@@ -1,6 +1,7 @@
 import './Login.css'
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd'
+import { LoginOutlined } from '@ant-design/icons'
 import authentication from '../../auth/authentication';
 import { NotificationContext } from '../../contexts/notificationContext';
 import { DispatchFavoriteContext } from '../../contexts/favoriteContext';
@@ -111,7 +112,7 @@ const Login = (props)=>{
                     <Input.Password placeholder="Password" size="large" allowClear />
                 </Form.Item>
                 <Form.Item >
-                    <Button className='login-button' type="primary" htmlType="submit" size='large'>
+                    <Button icon={<LoginOutlined />} className='login-button' type="primary" htmlType="submit" size='large'>
                         Login
                     </Button>
                     <p>don't have account ? <Button className='login-signup-button' type="link" onClick={()=> navigate('/signup')}>Sign up</Button></p>

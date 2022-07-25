@@ -47,7 +47,6 @@ const UserProfile = () => {
                     <Menu
                         className='profile-nav'
                         onClick={handleClick}
-                        theme="dark"
                         mode="inline"
                         defaultSelectedKeys={[selectedKey]}
                         items={items}

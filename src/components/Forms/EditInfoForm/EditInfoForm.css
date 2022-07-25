@@ -1,15 +1,19 @@
 .editform {
     height: 100%;
-    position: relative;
+    display:flex;
+    flex-direction:column;
+    height: -webkit-fill-available;
 }
 
 .editform-actions {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    flex-grow: 1;
+    display: flex;
+    justify-content: end;
+    padding-bottom: 2vh;
 }
 
 .editform-cancel-button {
+    align-self: flex-end;
     color: rgb(63, 63, 63);
     background-color: rgb(206, 206, 206);
 }
@@ -20,6 +24,7 @@
 }
 
 .editform-save-button {
+    align-self: flex-end;
     color: white;
     background-color: rgb(15, 89, 224);
     margin-left: 1vw;

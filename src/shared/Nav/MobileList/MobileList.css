@@ -1,0 +1,16 @@
+.list {
+    margin-bottom: 2vh;
+}
+
+.list-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+.list-actions-button {
+    background-color: rgb(233, 233, 233);
+    color: black;
+    border: 0.5px solid black;
+    width: 100%;
+}

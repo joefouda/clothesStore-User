@@ -1,32 +1,14 @@
 .favorites-container {
     display: grid;
     grid-template-columns: repeat(4, auto);
-    justify-content: center;
+    justify-content: start;
     gap: 2vw;
     height: 100%;
-    -ms-overflow-style: none;
-    /* for Internet Explorer, Edge */
-    scrollbar-width: none;
-    /* for Firefox */
-    overflow-y: scroll;
-}
-
-.favorites-container::-webkit-scrollbar {
-    width: 12px;
-    /* width of the entire scrollbar */
-}
-
-.favorites-container::-webkit-scrollbar-thumb {
-    background-color: black;
-    /* color of the scroll thumb */
-    border-radius: 20px;
-    /* roundness of the scroll thumb */
-    border: 3px solid white;
-    /* creates padding around scroll thumb */
 }
 
 @media screen and (max-width: 700px) {
     .favorites-container {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
+        gap: 1vw;
     }
 }
