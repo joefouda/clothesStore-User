@@ -1,7 +1,7 @@
 .Filter-Products {
     display: grid;
     grid-template-columns: repeat(5,auto);
-    justify-content: center;
+    justify-content: start;
     gap: 2vw;
 }
 
