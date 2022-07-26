@@ -54,7 +54,7 @@ const Checkout = () => {
             orderItems : [...cart],
             shippingAddress,
             paymentMethod,
-            grandTotal:20 +cart.reduce((st,next)=>st+next.orderPrice,0)
+            grandTotal:20 +cart.reduce((st,next)=>st+next.orderPrice,0),
         }
         console.log(order)
         axios.post('http://localhost:3000/api/v1/order',order, {
