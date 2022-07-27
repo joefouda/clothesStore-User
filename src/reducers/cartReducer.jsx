@@ -7,8 +7,13 @@ const reducer = (state, action) => {
             if(state.length !== 0 && state.some(ele=>ele.product._id === action.orderItem.product._id)) return state
             return [...state, {...action.orderItem}]
         case 'UPDATE':
+            if(authentication.isAuthinticated()){
+                return state.map(orderItem =>
+                    orderItem._id === action.orderItem._id ? action.orderItem : orderItem
+                );
+            }
             return state.map(orderItem =>
-                orderItem._id === action.id ? { ...orderItem, quantity: action.quantity } : orderItem
+                orderItem.product._id === action.id ? { ...orderItem, quantity: action.quantity, orderPrice:action.orderPrice } : orderItem
             );
         case 'REMOVE':
             console.log(action.id,action.orderItemId)

@@ -1,7 +1,7 @@
 import './OrderState.css'
-import { LoadingOutlined, SmileOutlined, SolutionOutlined, UserOutlined } from '@ant-design/icons';
+import { UserOutlined } from '@ant-design/icons';
 import { Steps, Button, Modal } from 'antd';
-import React, {useState} from 'react';
+import React from 'react';
 import { useEffect } from 'react';
 import useToggle from '../../../../hooks/useToggleState';
 const { Step } = Steps;

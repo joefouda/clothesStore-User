@@ -6,6 +6,7 @@ import { CartContext } from '../../contexts/cartContext';
 import { CartVisableContext } from '../../contexts/cartContext';
 import { NotificationContext } from '../../contexts/notificationContext';
 import { List, Empty, Button, Divider } from 'antd';
+import EditModal from './EditModal/EditModal';
 
 const CartPreview = () => {
     const navigate = useNavigate()
@@ -34,12 +35,12 @@ const CartPreview = () => {
                     renderItem={item => (
                         <List.Item
                             actions={[
-                                <a key="list-loadmore-edit">edit</a>,
-                                <a key="list-removeitem-remove" onClick={()=>{
+                                <EditModal key="list-loadmore-edit" orderItem={item}/>,
+                                <Button key="list-removeitem-remove" onClick={()=>{
                                     let orderItemId = item._id || ''
                                     dispatch({ type: 'REMOVE', orderItemId, id: item.product._id })
                                     openNotification('success', 'removed from Cart successfully')
-                                }}>remove</a>
+                                }}>remove</Button>
                             ]}
                             extra={
                                 <img

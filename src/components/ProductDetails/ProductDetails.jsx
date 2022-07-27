@@ -7,6 +7,7 @@ import MainWrapper from "../../shared/main-wrapper";
 import authentication from '../../auth/authentication';
 import { Select, Button, Form, InputNumber, Image, Tag } from 'antd';
 import { PlusOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
+import { CartContext } from '../../contexts/cartContext';
 import { DispatchContext } from '../../contexts/cartContext';
 import { CartVisableContext } from '../../contexts/cartContext';
 import { DispatchFavoriteContext } from '../../contexts/favoriteContext'
@@ -28,6 +29,7 @@ const ProductDetails = () => {
     const location = useLocation()
     const [variantsForm] = Form.useForm();
     const {toggleCartVisable} = useContext(CartVisableContext)
+    const cart = useContext(CartContext)
     const dispatch = useContext(DispatchContext)
     const dispatchFavorite = useContext(DispatchFavoriteContext)
     const favorites = useContext(FavoriteContext)
@@ -153,7 +155,7 @@ const ProductDetails = () => {
                             <InputNumber min={1} max={product.stock} style={{width:'30vw'}} disabled={product.stock === 0?true:false}/>
                         </Form.Item>
                         <Form.Item style={{justifyContent:'center'}}>
-                            <Button type="primary" className="cart-button" icon={<PlusOutlined />} disabled={product.stock === 0? true:false} onClick={handleAddToCart}>
+                            <Button type="primary" className="cart-button" icon={<PlusOutlined />} disabled={product.stock=== 0 || cart.some(orderItem=>orderItem.product._id === product._id)? true:false} onClick={handleAddToCart}>
                                 Add To Cart
                             </Button>
                             {favorites.findIndex(ele=>ele._id === product._id) === -1?<Button size='large' icon={<HeartOutlined />} disabled={product._id === 1 ? true:false} onClick={handleAddToFavorites} />:
