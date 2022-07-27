@@ -51,9 +51,11 @@ const OrderState = (props) => {
                 onOk={toggleModalVisible}
                 onCancel={toggleModalVisible}
             >
-                <Steps direction='vertical' style={{height:'100%'}}>
-                    {steps.map(step=>(<Step key={step.id} status={step.status} title={step.title} icon={step.icon} />))}
-                </Steps>
+                <div className='order-state-modal-body'>
+                    <Steps direction='vertical' style={{height:'100%'}}>
+                        {steps.map(step=>(<Step key={step.id} status={step.status} title={step.title} icon={step.icon} />))}
+                    </Steps>
+                </div>
             </Modal>
             
         </>

@@ -17,6 +17,7 @@ import { FavoriteContext } from '../../contexts/favoriteContext';
 
 const Nav = () => {
   const [categories, setCategories] = useState([])
+  const [searchPlacement, setSearchPlacement] = useState(window.matchMedia('(max-width: 1000px)').matches)
   const [userControlVisable, ToggleUserControlVisable] = useToggle(false);
   const [mobileListVisable, toggleMobileListVisable] = useToggle(false);
   const [mobileSearchVisable, ToggleMobileSearchVisable] = useToggle(false);
@@ -24,6 +25,11 @@ const Nav = () => {
   const cart = useContext(CartContext)
   const { cartVisable, toggleCartVisable } = useContext(CartVisableContext)
   const favorites = useContext(FavoriteContext)
+
+  const handleSearchPlacement = ()=>{
+    setSearchPlacement(window.matchMedia('(max-width: 1000px)').matches)
+    ToggleMobileSearchVisable()
+  }
 
   useEffect(() => {
     axios.get('http://localhost:3000/api/v1/category').then((res) => {
@@ -34,7 +40,7 @@ const Nav = () => {
     <div className='Nav'>
       <div className='Nav-mobile-nav Nav-buttons'>
         <UnorderedListOutlined className='Nav-icon' onClick={toggleMobileListVisable} />
-        <SearchOutlined className='Nav-icon' onClick={ToggleMobileSearchVisable} />
+        <SearchOutlined className='Nav-icon' onClick={handleSearchPlacement} />
       </div>
         <div className='Nav-start'>
         <Link to='/'><img src={img} style={{ maxWidth: '132px' }} /></Link>
@@ -43,7 +49,7 @@ const Nav = () => {
         </div>
       </div>
       <div className='Nav-buttons'>
-        <SearchOutlined className='Nav-normal-nav Nav-icon' onClick={ToggleMobileSearchVisable} />
+        <SearchOutlined className='Nav-normal-nav Nav-icon' onClick={handleSearchPlacement} />
         <UserOutlined className='Nav-normal-nav Nav-icon' onClick={ToggleUserControlVisable} />
         <Badge size="default" count={favorites.length} style={{zIndex:1}}>
           <HeartOutlined className='Nav-icon' onClick={ToggleFavoriteVisable} />
@@ -68,7 +74,7 @@ const Nav = () => {
         <MobileList toggleMobileListVisable={toggleMobileListVisable} categories={categories}/>
       </Drawer>
 
-      <Drawer placement="left" onClose={ToggleMobileSearchVisable} visible={mobileSearchVisable}>
+      <Drawer placement={searchPlacement?'left':'right'} onClose={ToggleMobileSearchVisable} visible={mobileSearchVisable}>
         <Favorites ToggleMobileSearchVisable={ToggleMobileSearchVisable} />
       </Drawer>
 

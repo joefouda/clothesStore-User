@@ -50,7 +50,7 @@
     display: none;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 1000px) {
     .ant-drawer-content-wrapper{
         width: 80vw !important
     }

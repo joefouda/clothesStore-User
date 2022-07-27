@@ -2,7 +2,7 @@ import 'antd/dist/antd.css'
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Nav from './shared/Nav/Nav';
-import { Layout } from 'antd';
+import MainFooter from './shared/Footer/Footer';
 import HomePage from './pages/Home';
 import FilterPage from './pages/Filter'
 import ProductDetailsPage from './pages/ProductDetails'
@@ -18,7 +18,6 @@ import FavoriteProvider from './contexts/favoriteContext';
 import NotificationProvider from './contexts/notificationContext';
 import UserProvider from './contexts/userContext';
 
-const { Footer } = Layout;
 
 function App() {
   return (
@@ -51,7 +50,7 @@ function App() {
                 <Route path="/404" element={<PageNotFound />} />
               </Routes>
               <MayRender>
-                <Footer style={{ textAlign: 'center' }}>BUTRO'N ©2022 Created by joeFouda</Footer>
+                <MainFooter />
               </MayRender>
             </BrowserRouter>
           </CartProvider>

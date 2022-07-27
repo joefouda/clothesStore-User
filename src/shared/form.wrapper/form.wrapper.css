@@ -6,7 +6,7 @@
     box-shadow: 1px 0px 10px black;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 1000px) {
     .form-container {
         border-radius: 0;
         padding: 0 0;

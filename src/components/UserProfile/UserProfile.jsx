@@ -37,9 +37,6 @@ const UserProfile = () => {
                 <Sider
                     breakpoint="lg"
                     collapsedWidth="0"
-                    onCollapse={(collapsed, type) => {
-                        console.log(collapsed, type);
-                    }}
                 >
                     <Menu
                         className='profile-nav'

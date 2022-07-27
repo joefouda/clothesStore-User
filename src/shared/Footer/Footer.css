@@ -1,0 +1,19 @@
+.footer-icons-container {
+    display: flex;
+    justify-content: center;
+    gap: 1vw;
+    margin-bottom: 1vh;
+}
+
+.footer-icon {
+    font-size: 35px;
+    color: black !important;
+}
+
+.footer-icon:hover{
+    color: rgba(0, 0, 0, 0.573) !important;
+}
+
+.footer-icon:focus, .footer-icon:active{
+    color: black !important
+}

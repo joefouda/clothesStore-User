@@ -44,6 +44,7 @@ const EditModal = (props) => {
             <Modal
                 title='Edit Order Item Quantity'
                 centered
+                okText="Save Changes"
                 visible={modalVisible}
                 onOk={handleSubmit}
                 onCancel={handleCancel}

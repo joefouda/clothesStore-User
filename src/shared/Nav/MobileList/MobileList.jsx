@@ -27,7 +27,7 @@ const MobileList = (props) => {
     <>
       <Collapse accordion className='list'>
         {props.categories.map(category => (<Panel header={category.name} key={category._id}>
-          {category.subCategories.map(subCategory => (<Link to={`/filter/${category.name}/${subCategory.name}`} onClick={props.toggleMobileListVisable}>{subCategory.name}</Link>))}
+          {category.subCategories.map(subCategory => (<Link key={subCategory._id} to={`/filter/${category.name}/${subCategory.name}`} onClick={props.toggleMobileListVisable}>{subCategory.name}</Link>))}
         </Panel>))}
       </Collapse>
       {authentication.isAuthinticated()?<div className='list-actions'>
