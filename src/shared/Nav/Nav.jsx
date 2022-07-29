@@ -1,9 +1,10 @@
 import './Nav.css'
-import PopOver from '../../components/popover/PopOver'
+import PopOver from '../../components/NavButtonsContent/popover/PopOver'
 import img from '../../assets/logo.jpg'
 import CartPreview from '../../components/Cart/Cart';
 import UserControl from '../../components/UserControl/UserControl';
-import Favorites from '../../components/Favorites';
+import Favorites from '../../components/NavButtonsContent/Favorites';
+import SearchContent from '../../components/NavButtonsContent/SearchContent/SearchContent';
 import MobileList from './MobileList/MobileList';
 import { ShoppingCartOutlined, UserOutlined, HeartOutlined, UnorderedListOutlined, SearchOutlined } from '@ant-design/icons';
 import { useEffect, useState, useContext } from 'react';
@@ -75,7 +76,7 @@ const Nav = () => {
       </Drawer>
 
       <Drawer placement={searchPlacement?'left':'right'} onClose={ToggleMobileSearchVisable} visible={mobileSearchVisable}>
-        <Favorites ToggleMobileSearchVisable={ToggleMobileSearchVisable} />
+        <SearchContent ToggleMobileSearchVisable={ToggleMobileSearchVisable} />
       </Drawer>
 
     </div>

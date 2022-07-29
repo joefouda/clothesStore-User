@@ -1,9 +1,9 @@
 import { List, Empty } from 'antd';
 import { Link } from 'react-router-dom';
 import React, { useContext } from 'react';
-import { DispatchFavoriteContext } from '../contexts/favoriteContext';
-import { FavoriteContext } from '../contexts/favoriteContext';
-import { NotificationContext } from '../contexts/notificationContext';
+import { DispatchFavoriteContext } from '../../contexts/favoriteContext';
+import { FavoriteContext } from '../../contexts/favoriteContext';
+import { NotificationContext } from '../../contexts/notificationContext';
 
 const Favorites = (props) => {
     const {openNotification} = useContext(NotificationContext)
