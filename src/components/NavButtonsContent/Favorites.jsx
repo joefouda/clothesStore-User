@@ -33,7 +33,7 @@ const Favorites = (props) => {
                                     width='100%'
                                     height='auto'
                                     alt="logo"
-                                    src={item.photo}
+                                    src={item.photos[0].src}
                                 />
                             }
                         >

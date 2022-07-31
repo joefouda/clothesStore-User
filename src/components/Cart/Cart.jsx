@@ -47,7 +47,7 @@ const CartPreview = () => {
                                     width='100%'
                                     height='auto'
                                     alt="logo"
-                                    src={item.product.photo}
+                                    src={item.product.photos[0].src}
                                 />
                             }
                         >

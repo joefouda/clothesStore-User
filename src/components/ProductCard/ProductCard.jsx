@@ -32,7 +32,7 @@ const ProductCard = (props) => {
   return (
   <Card
     hoverable
-    cover={<img alt={props.product.name} src={props.product.photo} />}
+    cover={<img alt={props.product.name} src={props.product.photos[0].src} />}
     className="Product-Card"
     actions={[
       <EyeOutlined onClick={handleNavigate}/>,
