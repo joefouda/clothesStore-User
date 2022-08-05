@@ -16,7 +16,7 @@ const ProductCard = (props) => {
   const {category, subCategory} = useParams()
   const navigate = useNavigate()
   const handleNavigate = ()=>{
-    navigate(`/${category || props.product.category.name}/${subCategory || props.product.subCategory.name}/${props.product.model}/${props.product.name}/${props.product._id}`)
+    navigate(`/${category || props.product.category.name}/${subCategory || props.product.subCategory.name}/${props.product.model.name}/${props.product.name}/${props.product._id}`)
   }
 
   const handleAddToFavorites = ()=>{

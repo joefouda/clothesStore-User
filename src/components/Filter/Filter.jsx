@@ -12,6 +12,7 @@ const Filter = () => {
     const [products, setProducts] = useState([])
     useEffect(() => {
         levels.subCategory ? axios.get(`http://localhost:3000/api/v1/product/subCategory/${levels.subCategory}`).then((res) => {
+            console.log(res)
             setProducts(res.data.products)
         }) : axios.get(`http://localhost:3000/api/v1/product/category/${levels.category}`).then((res) => {
             setProducts(res.data.products)

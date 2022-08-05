@@ -52,7 +52,7 @@ const CartPreview = () => {
                             }
                         >
                             <List.Item.Meta
-                                title={<Link to={`/${item.product.category.name}/${item.product.subCategory.name}/${item.product.model}/${item.product.name}/${item.product._id}`} >{item.product.name}</Link>}
+                                title={<Link to={`/${item.product.category.name}/${item.product.subCategory.name}/${item.product.model.name}/${item.product.name}/${item.product._id}`} >{item.product.name}</Link>}
                                 description={`quantity: ${item.quantity}, price: ${item.product.price}`}
                             />
                             {item.product.specs.reduce((total, ele, index) => {
