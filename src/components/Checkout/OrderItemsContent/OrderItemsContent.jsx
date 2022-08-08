@@ -8,7 +8,7 @@ const OrderItemsContent = () => {
 
     const data = cart.map((orderItem, i) => ({
         title: orderItem.product.name,
-        photo: orderItem.product.photo,
+        photo: orderItem.product.photos[0].src,
         description: <Descriptions title={<Link to={`/${orderItem.product.category.name}/${orderItem.product.subCategory.name}/${orderItem.product.model}/${orderItem.product.name}/${orderItem.product._id}`}>{orderItem.product.name}</Link>} bordered>
             <Descriptions.Item label="Qauntity" span={3}>{orderItem.quantity}</Descriptions.Item>
             <Descriptions.Item label="Product Price" span={3}>{orderItem.product.price}</Descriptions.Item>

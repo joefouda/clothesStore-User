@@ -25,7 +25,6 @@ const ShippingAddress = (props) => {
 
 const ProfileOrders = () => {
     const user = useContext(UserContext)
-    console.log(user.orders)
     return (
         user.orders.length === 0 ? <Empty
             description={
@@ -57,7 +56,7 @@ const ProfileOrders = () => {
                                     <h3>arriving on {arrivingDate.toLocaleDateString()}</h3>
                                     <div className="order-body-left-details">
                                         {order.orderItems.map(orderItem => (<><div key={orderItem._id} className="order-body-left-details-item">
-                                            <Image className='order-body-left-details-item-image' src={orderItem.product.photo} />
+                                            <Image className='order-body-left-details-item-image' src={orderItem.product.photos[0].src} />
                                             <Descriptions title={<Link to={`/${orderItem.product.category.name}/${orderItem.product.subCategory.name}/${orderItem.product.model}/${orderItem.product.name}/${orderItem.product._id}`}>{orderItem.product.name}</Link>} bordered>
                                                 <Descriptions.Item label="Qauntity" span={3}>{orderItem.quantity}</Descriptions.Item>
                                                 <Descriptions.Item label="Product Price" span={3}>{orderItem.product.price}</Descriptions.Item>

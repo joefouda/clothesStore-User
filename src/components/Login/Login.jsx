@@ -12,7 +12,7 @@ import { DispatchUserContext } from '../../contexts/userContext';
 import { useContext } from 'react';
 import axios from 'axios';
 
-const Login = (props)=>{
+const Login = (props) => {
     const { openNotification } = useContext(NotificationContext)
     const dispatchUser = useContext(DispatchUserContext)
     const favorites = useContext(FavoriteContext)
@@ -24,46 +24,47 @@ const Login = (props)=>{
         authentication.logIn(values).then((res) => {
             if (res.data.status === 422) {
                 openNotification('error', "Invalid Username or Password")
+            } else if (!res.data.token) {
+                openNotification('error', res.data.message)
             } else {
                 localStorage.setItem('token', res.data.token)
-                console.log(res.data.user)
-                dispatchUser({type:'SET',user:res.data.user})
+                dispatchUser({ type: 'SET', user: res.data.user })
 
                 // sync user favorites from localstorage with backend user favorites on login
-                favorites.length !== 0? favorites.map(item=>{
-                    axios.put('http://localhost:3000/api/v1/user', {productId:item._id},{
-                        headers:{
+                favorites.length !== 0 ? favorites.map(item => {
+                    axios.put('http://localhost:3000/api/v1/user', { productId: item._id }, {
+                        headers: {
                             'Authorization': localStorage.getItem('token')
                         }
-                    }).then(res=>{
-                        dispatchFavorites({type:'MERGE', favorites:res.data.user.favorites})
+                    }).then(res => {
+                        dispatchFavorites({ type: 'MERGE', favorites: res.data.user.favorites })
                     })
-                }):axios.get('http://localhost:3000/api/v1/user/favorites',{
-                    headers:{
+                }) : axios.get('http://localhost:3000/api/v1/user/favorites', {
+                    headers: {
                         'Authorization': localStorage.getItem('token')
                     }
-                }).then(res=>{
-                    dispatchFavorites({type:'MERGE', favorites:res.data.favorites})
+                }).then(res => {
+                    dispatchFavorites({ type: 'MERGE', favorites: res.data.favorites })
                 })
 
                 // sync user cart from localstorage with backend user cart on login
-                cart.length !== 0? cart.map(item=>{
-                    axios.post('http://localhost:3000/api/v1/cart/add', {...item},{
-                        headers:{
+                cart.length !== 0 ? cart.map(item => {
+                    axios.post('http://localhost:3000/api/v1/cart/add', { ...item }, {
+                        headers: {
                             'Authorization': localStorage.getItem('token')
                         }
-                    }).then(res=>{
-                        dispatchCart({type:'MERGE', cart:res.data.cart})
+                    }).then(res => {
+                        dispatchCart({ type: 'MERGE', cart: res.data.cart })
                     })
-                }):axios.get('http://localhost:3000/api/v1/cart/items',{
-                    headers:{
+                }) : axios.get('http://localhost:3000/api/v1/cart', {
+                    headers: {
                         'Authorization': localStorage.getItem('token')
                     }
-                }).then(res=>{
-                    dispatchCart({type:'MERGE', cart:res.data.cart})
+                }).then(res => {
+                    dispatchCart({ type: 'MERGE', cart: res.data.cart })
                 })
 
-                if(props.ToggleUserControlVisable) props.ToggleUserControlVisable()
+                if (props.ToggleUserControlVisable) props.ToggleUserControlVisable()
                 navigate('/profile')
             }
         }).catch(error => {
@@ -72,52 +73,52 @@ const Login = (props)=>{
     }
     const [loginForm] = Form.useForm();
     return (
-            <Form
-                form={loginForm}
-                wrapperCol={{
-                    span: 24,
-                }}
-                initialValues={{
-                    remember: true,
-                }}
-                onFinish={onFinish}
-                autoComplete="off"
+        <Form
+            form={loginForm}
+            wrapperCol={{
+                span: 24,
+            }}
+            initialValues={{
+                remember: true,
+            }}
+            onFinish={onFinish}
+            autoComplete="off"
+        >
+            <h2>Log In</h2>
+            <p>Log in to quickly navigate to the page you’re looking for.</p>
+            <Form.Item
+                name="email"
+                rules={[
+                    {
+                        required: true,
+                    },
+                    {
+                        type: 'email',
+                    }
+                ]}
             >
-                <h2>Log In</h2>
-                <p>Log in to quickly navigate to the page you’re looking for.</p>
-                <Form.Item
-                    name="email"
-                    rules={[
-                        {
-                            required: true,
-                        },
-                        {
-                            type: 'email',
-                        }
-                    ]}
-                >
-                    <Input placeholder="Email" size="large" allowClear />
-                </Form.Item>
-                <Form.Item
-                    name="password"
-                    rules={[
-                        {
-                            required: true,
-                        },
-                        {
-                            min: 8
-                        }
-                    ]}
-                >
-                    <Input.Password placeholder="Password" size="large" allowClear />
-                </Form.Item>
-                <Form.Item >
-                    <Button icon={<LoginOutlined />} className='login-button' type="primary" htmlType="submit" size='large'>
-                        Login
-                    </Button>
-                    <p>don't have account ? <Button className='login-signup-button' type="link" onClick={()=> navigate('/signup')}>Sign up</Button></p>
-                </Form.Item>
-            </Form>
+                <Input placeholder="Email" size="large" allowClear />
+            </Form.Item>
+            <Form.Item
+                name="password"
+                rules={[
+                    {
+                        required: true,
+                    },
+                    {
+                        min: 8
+                    }
+                ]}
+            >
+                <Input.Password placeholder="Password" size="large" allowClear />
+            </Form.Item>
+            <Form.Item >
+                <Button icon={<LoginOutlined />} className='login-button' type="primary" htmlType="submit" size='large'>
+                    Login
+                </Button>
+                <p>don't have account ? <Button className='login-signup-button' type="link" onClick={() => navigate('/signup')}>Sign up</Button></p>
+            </Form.Item>
+        </Form>
     )
 }
 

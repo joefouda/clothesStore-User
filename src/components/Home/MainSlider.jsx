@@ -35,7 +35,7 @@ const MainSlider = () => {
         axios.get('http://localhost:3000/api/v1/other/mainSliderMobilePhotos').then((res)=>{
             setMobilePhotos(res.data?.mainSlider?.photos || [])
         })
-    })
+    },[])
     return (
         <Carousel effect='fade' autoplay autoplaySpeed={2000} dots={false}>
             {webView ? 
