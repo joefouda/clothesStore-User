@@ -29,6 +29,10 @@
     gap: 2vw;
 }
 
+.order-steps {
+    padding: 2vh
+}
+
 .order-body {
     padding: 2vh;
     display: flex;
@@ -59,6 +63,9 @@
 }
 
 .order-body-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
     align-self: center;
 }
 
@@ -66,11 +73,43 @@
     background-color: #e9e9e9;
 }
 
+
 .order-track-button:hover, .order-track-button:focus {
     background-color: #f3efef;
     color: black;
 }
 
+.ant-btn-danger {
+    color: #fff;
+    border-color: #ff4d4f;
+    background: #ff4d4f;
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+    box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
+}
+
+.ant-btn-danger:hover, .ant-btn-danger:focus {
+    color: white;
+    border-color: #ff4d4f;
+    background: #ff6c6f;
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+    box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
+}
+
+.ant-btn-dangerous {
+    color: #fff;
+    border-color: #ff4d4f;
+    background: #ff4d4f;
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+    box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
+}
+
+.ant-btn-dangerous:hover, .ant-btn-dangerous:focus {
+    color: white;
+    border-color: #ff4d4f;
+    background: #ff6c6f;
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+    box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
+}
 
 
 @media screen and (max-width: 1000px) {

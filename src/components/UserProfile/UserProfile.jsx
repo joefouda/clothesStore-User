@@ -4,9 +4,11 @@ import ProfileInfo from './ProfileInfo/ProfileInfo'
 import ProfilePayment from './ProfilePayment/ProfilePayment'
 import ProfileOrders from './ProfileOrders/ProfileOrders'
 import ProfileFavorites from './ProfileFavorites/ProfileFavorites'
-import React, { useState } from "react"
+import axios from 'axios'
 import { Layout, Menu } from 'antd';
 import { UserOutlined, HeartOutlined, UnorderedListOutlined, DollarCircleOutlined } from '@ant-design/icons';
+import { useState, useEffect, useContext } from 'react'
+import { DispatchUserContext } from '../../contexts/userContext'
 const { Content, Sider } = Layout
 
 function getItem(label, key, icon, children, type) {
@@ -27,10 +29,23 @@ const items = [
 ];
 
 const UserProfile = () => {
-    const [selectedKey, setSelectedKey] = useState('Orders')
+    const dispatchUser = useContext(DispatchUserContext)
+    const [selectedKey, setSelectedKey] = useState('')
     const handleClick = (e) => {
         setSelectedKey(e.key)
     }
+
+    useEffect(()=>{
+        console.log('triggered')
+        axios.get('http://localhost:3000/api/v1/user/id', {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        }).then(res => {
+            dispatchUser({ type: 'SET', user: res.data.user })
+            setSelectedKey('Orders')
+        })
+    },[])
     return (
         <MainWrapper>
             <Layout>

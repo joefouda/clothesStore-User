@@ -25,8 +25,11 @@ const Signup = () => {
             address
         }
         authentication.Signup(data).then(res => {
-            console.log(res)
-            navigate('/login')
+            if (!res.data.message.includes('duplicate key error')) {
+                navigate('/login')
+            } else {
+                openNotification('error', 'Email Exists')
+            }
         }).catch(error => {
             openNotification('error', error.message)
         })
