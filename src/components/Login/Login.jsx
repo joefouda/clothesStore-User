@@ -1,6 +1,6 @@
 import './Login.css'
 import { useNavigate } from 'react-router-dom';
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, Spin } from 'antd'
 import { LoginOutlined } from '@ant-design/icons'
 import authentication from '../../auth/authentication';
 import { NotificationContext } from '../../contexts/notificationContext';
@@ -10,10 +10,12 @@ import { CartContext } from '../../contexts/cartContext';
 import { DispatchContext } from '../../contexts/cartContext';
 import { DispatchUserContext } from '../../contexts/userContext';
 import { useContext } from 'react';
+import useToggle from '../../hooks/useToggleState';
 import axios from 'axios';
 
 const Login = (props) => {
     const { openNotification } = useContext(NotificationContext)
+    const [progress, toggleProgress] = useToggle(false)
     const dispatchUser = useContext(DispatchUserContext)
     const favorites = useContext(FavoriteContext)
     const dispatchFavorites = useContext(DispatchFavoriteContext)
@@ -21,11 +23,14 @@ const Login = (props) => {
     const dispatchCart = useContext(DispatchContext)
     const navigate = useNavigate()
     const onFinish = (values) => {
+        toggleProgress()
         authentication.logIn(values).then((res) => {
             if (res.data.status === 422) {
                 openNotification('error', "Invalid Username or Password")
+                toggleProgress()
             } else if (!res.data.token) {
-                openNotification('error', res.data.message)
+                openNotification('error', 'Server Error')
+                toggleProgress()
             } else {
                 localStorage.setItem('token', res.data.token)
                 dispatchUser({ type: 'SET', user: res.data.user })
@@ -39,12 +44,16 @@ const Login = (props) => {
                     }).then(res => {
                         dispatchFavorites({ type: 'MERGE', favorites: res.data.user.favorites })
                     })
+                }).catch(error => {
+                    openNotification('error', 'Server Error')
                 }) : axios.get('http://localhost:3000/api/v1/user/favorites', {
                     headers: {
                         'Authorization': localStorage.getItem('token')
                     }
                 }).then(res => {
                     dispatchFavorites({ type: 'MERGE', favorites: res.data.favorites })
+                }).catch(error => {
+                    openNotification('error', 'Server Error')
                 })
 
                 // sync user cart from localstorage with backend user cart on login
@@ -56,25 +65,28 @@ const Login = (props) => {
                     }).then(res => {
                         dispatchCart({ type: 'MERGE', cart: res.data.cart })
                     })
+                }).catch(error => {
+                    openNotification('error', 'Server Error')
                 }) : axios.get('http://localhost:3000/api/v1/cart', {
                     headers: {
                         'Authorization': localStorage.getItem('token')
                     }
                 }).then(res => {
                     dispatchCart({ type: 'MERGE', cart: res.data.cart })
+                }).catch(error => {
+                    openNotification('error', 'Server Error')
                 })
 
                 if (props.ToggleUserControlVisable) props.ToggleUserControlVisable()
                 navigate('/profile')
+                toggleProgress()
             }
         }).catch(error => {
-            openNotification('error', error.message)
+            openNotification('error', 'Server Error')
         })
     }
-    const [loginForm] = Form.useForm();
     return (
         <Form
-            form={loginForm}
             wrapperCol={{
                 span: 24,
             }}
@@ -113,7 +125,7 @@ const Login = (props) => {
                 <Input.Password placeholder="Password" size="large" allowClear />
             </Form.Item>
             <Form.Item >
-                <Button icon={<LoginOutlined />} className='login-button' type="primary" htmlType="submit" size='large'>
+                <Button icon={<LoginOutlined />} className='login-button' type="primary" htmlType="submit" size='large' loading={progress?true:false}>
                     Login
                 </Button>
                 <p>don't have account ? <Button className='login-signup-button' type="link" onClick={() => navigate('/signup')}>Sign up</Button></p>

@@ -1,18 +1,21 @@
 import './Signup.css'
 import MainWrapper from "../../shared/main-wrapper"
 import { useNavigate } from 'react-router-dom'
-import { Form, Input, Button, Cascader, Divider } from 'antd'
+import { Form, Input, Button, Cascader, Divider, Spin } from 'antd'
 import { FormOutlined } from '@ant-design/icons'
 import authentication from '../../auth/authentication';
 import residences from "../../shared/residences"
 import { NotificationContext } from "../../contexts/notificationContext"
 import { useContext } from 'react';
+import useToggle from '../../hooks/useToggleState'
 import FormWrapper from '../../shared/form.wrapper/form.wrapper';
 
 const Signup = () => {
+    const [progress, toggleProgress] = useToggle(false)
     const navigate = useNavigate()
     const { openNotification } = useContext(NotificationContext)
     const onFinish = (values) => {
+        toggleProgress()
         let address = {
             country: values.address.countryProvince[0],
             province: values.address.countryProvince[1],
@@ -27,8 +30,10 @@ const Signup = () => {
         authentication.Signup(data).then(res => {
             if (!res.data.message.includes('duplicate key error')) {
                 navigate('/login')
+                toggleProgress()
             } else {
                 openNotification('error', 'Email Exists')
+                toggleProgress()
             }
         }).catch(error => {
             openNotification('error', error.message)
@@ -156,7 +161,7 @@ const Signup = () => {
                         </Input.Group>
                     </Form.Item>
                     <Form.Item >
-                        <Button icon={<FormOutlined />} className="signup-signup-button" type="primary" htmlType="submit" size='large'>
+                        <Button icon={<FormOutlined />} className="signup-signup-button" type="primary" htmlType="submit" size='large' loading={progress?true:false}>
                             Signup
                         </Button>
                         <p>already have an account ? <Button className="signup-login-button" type="link" onClick={() => navigate('/login')}>Login</Button></p>
