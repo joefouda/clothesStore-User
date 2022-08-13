@@ -15,7 +15,7 @@ const PopOver = (props) => {
       placement="bottomRight"
       onVisibleChange={ToggleHovered}
     >   
-        <h1 className='nav-link' style={{fontFamily:'Source Sans Pro, sans-serif'}}>{props.title}</h1>
+        <span className='nav-link'>{props.title}</span>
     </Popover>
   );
 };

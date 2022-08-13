@@ -31,6 +31,8 @@ const EditInfoForm = (props) => {
             dispatchUser({type:'SET', user:res.data.user})
             props.toggleEditMode()
             openNotification('success', "your information updated successfully")
+        }).catch(error=>{
+            openNotification('error', 'Server Error')
         })
     }
 

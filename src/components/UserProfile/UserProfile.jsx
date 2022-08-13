@@ -9,6 +9,7 @@ import { Layout, Menu } from 'antd';
 import { UserOutlined, HeartOutlined, UnorderedListOutlined, DollarCircleOutlined } from '@ant-design/icons';
 import { useState, useEffect, useContext } from 'react'
 import { DispatchUserContext } from '../../contexts/userContext'
+import { NotificationContext } from '../../contexts/notificationContext'
 const { Content, Sider } = Layout
 
 function getItem(label, key, icon, children, type) {
@@ -29,6 +30,7 @@ const items = [
 ];
 
 const UserProfile = () => {
+    const { openNotification } = useContext(NotificationContext)
     const dispatchUser = useContext(DispatchUserContext)
     const [selectedKey, setSelectedKey] = useState('')
     const handleClick = (e) => {
@@ -36,7 +38,6 @@ const UserProfile = () => {
     }
 
     useEffect(()=>{
-        console.log('triggered')
         axios.get('http://localhost:3000/api/v1/user/id', {
             headers: {
                 'Authorization': localStorage.getItem('token')
@@ -44,6 +45,8 @@ const UserProfile = () => {
         }).then(res => {
             dispatchUser({ type: 'SET', user: res.data.user })
             setSelectedKey('Orders')
+        }).catch(error => {
+            openNotification('error', 'Server Error')
         })
     },[])
     return (

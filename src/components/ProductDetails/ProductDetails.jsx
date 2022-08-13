@@ -48,6 +48,8 @@ const ProductDetails = () => {
             setQuery(res.data.product.specs)
             setProduct(res.data.product)
             navigate(`/${levels.category}/${levels.subCategory}/${levels.model}/${res.data.product.name}/${res.data.product._id}`)
+        }).catch(error=>{
+            openNotification('error', 'Server Error')
         })
     };
 
@@ -70,7 +72,7 @@ const ProductDetails = () => {
                 toggleProgress()
                 toggleCartVisable()
             }).catch(error => {
-                console.log(error)
+                openNotification('error', 'Server Error')
             })
         } else {
             openNotification('success', 'added to cart successfully')
@@ -102,6 +104,8 @@ const ProductDetails = () => {
             setPhotos(res.data.product.photos)
             setSpecs(res.data.product.model.specs)
             toggleProgress()
+        }).catch(error => {
+            openNotification('error', 'Server Error')
         })
     }, [location])
 

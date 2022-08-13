@@ -1,11 +1,11 @@
 const ProductPrice = ({ product }) => {
     return product.discountPercentage > 0 ? (
       <p>
-        <span className="old-sale-value">LE {product.price}</span>&nbsp;&nbsp;
-        <span className="new-sale-value">LE {product.price - product.discountValue} ({product.discountPercentage}% OFF)</span>
+        <span style={{textDecoration:'line-through'}}>LE {product.price}</span>&nbsp;&nbsp;
+        <span style={{color:'red'}}>LE {product.netPrice} ({product.discountPercentage}% OFF)</span>
       </p>
     ) : (
-      <span>LE {product.price}</span>
+      <span>LE {product.netPrice}</span>
     );
   };
 

@@ -6,6 +6,7 @@ import { CaretDownOutlined } from '@ant-design/icons'
 import { UserOutlined } from '@ant-design/icons';
 import { useContext } from 'react';
 import ConfirmModal from './ConfirmModal'
+import ProductPrice from '../../../shared/ProductPrice'
 const { Step } = Steps;
 
 const ShippingAddress = (props) => {
@@ -101,7 +102,7 @@ const ProfileOrders = () => {
                                             <Image className='order-body-left-details-item-image' src={orderItem.product.photos[0].src} />
                                             <Descriptions title={<Link to={`/${orderItem.product.category.name}/${orderItem.product.subCategory.name}/${orderItem.product.model}/${orderItem.product.name}/${orderItem.product._id}`}>{orderItem.product.name}</Link>} bordered>
                                                 <Descriptions.Item label="Qauntity" span={3}>{orderItem.quantity}</Descriptions.Item>
-                                                <Descriptions.Item label="Product Price" span={3}>{orderItem.product.price}</Descriptions.Item>
+                                                <Descriptions.Item label="Product Price" span={3}><ProductPrice product={orderItem.product} /></Descriptions.Item>
                                                 <Descriptions.Item label="OrderItem total Price" span={3}>{orderItem.orderPrice}</Descriptions.Item>
                                                 <Descriptions.Item label="Description" span={3}>{orderItem.product.description}</Descriptions.Item>
                                             </Descriptions>

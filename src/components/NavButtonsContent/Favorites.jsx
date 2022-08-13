@@ -4,6 +4,7 @@ import React, { useContext } from 'react';
 import { DispatchFavoriteContext } from '../../contexts/favoriteContext';
 import { FavoriteContext } from '../../contexts/favoriteContext';
 import { NotificationContext } from '../../contexts/notificationContext';
+import ProductPrice from '../../shared/ProductPrice';
 
 const Favorites = (props) => {
     const {openNotification} = useContext(NotificationContext)
@@ -39,7 +40,7 @@ const Favorites = (props) => {
                         >
                             <List.Item.Meta
                                 title={<Link to={`/${item.category.name}/${item.subCategory.name}/${item.model.name}/${item.name}/${item._id}`} onClick={()=>props.ToggleFavoriteVisable()}>{item.name}</Link>}
-                                description={`price: ${item.price}`}
+                                description={`price: ${<ProductPrice product={item} />}`}
                             />
                             {item.specs.reduce((total, ele, index) => {
                                 if (index === item.specs.length - 1) return total + `${ele.name}: ${ele.value}`

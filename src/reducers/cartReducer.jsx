@@ -16,7 +16,6 @@ const reducer = (state, action) => {
                 orderItem.product._id === action.id ? { ...orderItem, quantity: action.quantity, orderPrice:action.orderPrice } : orderItem
             );
         case 'REMOVE':
-            console.log(action.id,action.orderItemId)
             if (authentication.isAuthinticated()){
                 axios.delete(`http://localhost:3000/api/v1/cart/remove/${action.orderItemId}`,{
                     headers:{

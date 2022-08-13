@@ -7,6 +7,7 @@ import { CartVisableContext } from '../../contexts/cartContext';
 import { NotificationContext } from '../../contexts/notificationContext';
 import { List, Empty, Button, Divider } from 'antd';
 import EditModal from './EditModal/EditModal';
+import ProductPrice from '../../shared/ProductPrice';
 
 const CartPreview = () => {
     const navigate = useNavigate()
@@ -53,7 +54,7 @@ const CartPreview = () => {
                         >
                             <List.Item.Meta
                                 title={<Link to={`/${item.product.category.name}/${item.product.subCategory.name}/${item.product.model.name}/${item.product.name}/${item.product._id}`} >{item.product.name}</Link>}
-                                description={`quantity: ${item.quantity}, price: ${item.product.price}`}
+                                description={`quantity: ${item.quantity}, price: ${<ProductPrice product={item.product}/>}`}
                             />
                             {item.product.specs.reduce((total, ele, index) => {
                                 if (index === item.product.specs.length - 1) return total + `${ele.name}: ${ele.value}`

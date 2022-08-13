@@ -66,6 +66,8 @@ const Checkout = () => {
             dispatchCart({type:'PERMENANTCLEAR'})
             openNotification('success', 'Your order is placed succesfully')
             navigate('/profile')
+        }).catch(error=>{
+            openNotification('error', 'Server Error')
         })
     }
 
