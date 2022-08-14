@@ -58,7 +58,7 @@ const ProductDetails = () => {
         let orderItem = {
             product,
             quantity,
-            orderPrice: quantity * product.price
+            orderPrice: quantity * product.netPrice
         }
         dispatch({ type: 'ADD', orderItem })
         if (authentication.isAuthinticated()) {

@@ -54,8 +54,9 @@ const CartPreview = () => {
                         >
                             <List.Item.Meta
                                 title={<Link to={`/${item.product.category.name}/${item.product.subCategory.name}/${item.product.model.name}/${item.product.name}/${item.product._id}`} >{item.product.name}</Link>}
-                                description={`quantity: ${item.quantity}, price: ${<ProductPrice product={item.product}/>}`}
+                                description={`quantity: ${item.quantity}`}
                             />
+                            <ProductPrice product={item.product}/>
                             {item.product.specs.reduce((total, ele, index) => {
                                 if (index === item.product.specs.length - 1) return total + `${ele.name}: ${ele.value}`
                                 return total + `${ele.name}: ${ele.value}, `

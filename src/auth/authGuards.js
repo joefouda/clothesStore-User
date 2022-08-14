@@ -1,4 +1,4 @@
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import Authentication from './authentication';
 
 export const LogOutGuard = () => {
@@ -6,7 +6,8 @@ export const LogOutGuard = () => {
 }
 
 export const LogInGuard = () => {
-    return Authentication.isAuthinticated() ? <Outlet /> : <Navigate to="/login" />
+    const location = useLocation()
+    return Authentication.isAuthinticated() ? <Outlet /> : <Navigate to="/login" replace state={{from:location}}/>
 }
 
 export const Redirect = () => {

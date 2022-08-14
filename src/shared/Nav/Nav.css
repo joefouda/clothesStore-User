@@ -53,7 +53,7 @@
 
 @media screen and (max-width: 1000px) {
     .ant-drawer-content-wrapper{
-        width: 80vw !important
+        width: 100vw !important
     }
     .Nav-mobile-nav {
         display: flex;

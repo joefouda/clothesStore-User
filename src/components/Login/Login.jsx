@@ -1,5 +1,5 @@
 import './Login.css'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, Input, Button, Spin } from 'antd'
 import { LoginOutlined } from '@ant-design/icons'
 import authentication from '../../auth/authentication';
@@ -14,6 +14,7 @@ import useToggle from '../../hooks/useToggleState';
 import axios from 'axios';
 
 const Login = (props) => {
+    const location = useLocation()
     const { openNotification } = useContext(NotificationContext)
     const [progress, toggleProgress] = useToggle(false)
     const dispatchUser = useContext(DispatchUserContext)
@@ -43,9 +44,9 @@ const Login = (props) => {
                         }
                     }).then(res => {
                         dispatchFavorites({ type: 'MERGE', favorites: res.data.user.favorites })
+                    }).catch(error => {
+                        openNotification('error', 'Server Error')
                     })
-                }).catch(error => {
-                    openNotification('error', 'Server Error')
                 }) : axios.get('http://localhost:3000/api/v1/user/favorites', {
                     headers: {
                         'Authorization': localStorage.getItem('token')
@@ -64,9 +65,9 @@ const Login = (props) => {
                         }
                     }).then(res => {
                         dispatchCart({ type: 'MERGE', cart: res.data.cart })
+                    }).catch(error => {
+                        openNotification('error', 'Server Error')
                     })
-                }).catch(error => {
-                    openNotification('error', 'Server Error')
                 }) : axios.get('http://localhost:3000/api/v1/cart', {
                     headers: {
                         'Authorization': localStorage.getItem('token')
@@ -78,10 +79,15 @@ const Login = (props) => {
                 })
 
                 if (props.ToggleUserControlVisable) props.ToggleUserControlVisable()
-                navigate('/profile')
+                if(location.state?.from){
+                    navigate(location.state?.from)
+                } else {
+                    navigate('/profile')
+                }
                 toggleProgress()
             }
         }).catch(error => {
+            console.log(error)
             openNotification('error', 'Server Error')
         })
     }
