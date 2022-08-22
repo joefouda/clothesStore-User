@@ -29,7 +29,10 @@ const Login = (props) => {
             if (res.data.status === 422) {
                 openNotification('error', "Invalid Username or Password")
                 toggleProgress()
-            } else if (!res.data.token) {
+            } else if (res.data.message.includes('you have been banned')) {
+                openNotification('error', 'you have been banned due to bad behavior')
+                toggleProgress()
+            }else if (!res.data.token) {
                 openNotification('error', 'Server Error')
                 toggleProgress()
             } else {

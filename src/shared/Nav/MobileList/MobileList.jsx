@@ -7,6 +7,7 @@ import authentication from '../../../auth/authentication';
 import { DispatchContext } from '../../../contexts/cartContext';
 import { DispatchFavoriteContext } from '../../../contexts/favoriteContext';
 import { DispatchUserContext } from '../../../contexts/userContext';
+import PanelContent from './PanelContent';
 const { Panel } = Collapse;
 
 const MobileList = (props) => {
@@ -26,10 +27,13 @@ const MobileList = (props) => {
   return (
     <>
       <Collapse accordion className='list'>
-        {props.categories.map(category => (<Panel header={category.name} key={category._id}>
-          {category.subCategories.map(subCategory => (<Link key={subCategory._id} to={`/filter/${category.name}/${subCategory.name}`} onClick={props.toggleMobileListVisable}>{subCategory.name}</Link>))}
-        </Panel>))}
+        {props.categories.map(category => (
+        <Panel header={category.name} key={category._id}>
+          <PanelContent category={category} toggleMobileListVisable={props.toggleMobileListVisable}/>
+        </Panel>
+        ))}
       </Collapse>
+
       {authentication.isAuthinticated()?<div className='list-actions'>
         <Button icon={<UserOutlined />} className='list-actions-button' onClick={()=>{
           props.toggleMobileListVisable()

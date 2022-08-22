@@ -58,8 +58,8 @@ const EditInfoForm = (props) => {
             <Form
                 className='editform'
                 form={profileInfoForm}
-                labelCol={{ span: 1 }}
-                wrapperCol={{ span: 23 }}
+                labelCol={{ span: 2 }}
+                wrapperCol={{ span: 22 }}
                 onFinish={onFinish}
                 autoComplete="off"
             >

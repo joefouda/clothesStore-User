@@ -57,9 +57,9 @@ const CartPreview = () => {
                                 description={`quantity: ${item.quantity}`}
                             />
                             <ProductPrice product={item.product}/>
-                            {item.product.specs.reduce((total, ele, index) => {
-                                if (index === item.product.specs.length - 1) return total + `${ele.name}: ${ele.value}`
-                                return total + `${ele.name}: ${ele.value}, `
+                            {Object.keys(item.product.variants).reduce((total, variantkey, index) => {
+                                if (index === Object.keys(item.product.variants).length - 1) return total + `${variantkey}: ${item.product.variants[variantkey]}`
+                                return total + `${variantkey}: ${item.product.variants[variantkey]}, `
                             }, '')}
                         </List.Item>
                     )}

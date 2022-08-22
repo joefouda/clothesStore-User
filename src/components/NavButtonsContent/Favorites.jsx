@@ -40,11 +40,11 @@ const Favorites = (props) => {
                         >
                             <List.Item.Meta
                                 title={<Link to={`/${item.category.name}/${item.subCategory.name}/${item.model.name}/${item.name}/${item._id}`} onClick={()=>props.ToggleFavoriteVisable()}>{item.name}</Link>}
-                                description={`price: ${<ProductPrice product={item} />}`}
                             />
-                            {item.specs.reduce((total, ele, index) => {
-                                if (index === item.specs.length - 1) return total + `${ele.name}: ${ele.value}`
-                                return total + `${ele.name}: ${ele.value}, `
+                            <ProductPrice product={item} />
+                            {Object.keys(item.variants).reduce((total, variantkey, index) => {
+                                if (index === Object.keys(item.variants).length - 1) return total + `${variantkey}: ${item.variants[variantkey]}`
+                                return total + `${variantkey}: ${item.variants[variantkey]}, `
                             }, '')}
                         </List.Item>
                     )}

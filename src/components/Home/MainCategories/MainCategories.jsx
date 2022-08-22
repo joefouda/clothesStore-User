@@ -9,7 +9,11 @@ const MainCategories = () => {
     const [categories, setCategories] = useState([])
     useEffect(() => {
         axios.get('http://localhost:3000/api/v1/category').then((res) => {
-            setCategories(() => [...res.data.categories])
+            if(res.data.categories.length <= 4){
+                setCategories(() => [...res.data.categories])
+            } else {
+                setCategories(() => [...res.data.categories.slice(0, 4)])
+            }
         }).catch(error=>{
             openNotification('error', 'Server Error')
         })

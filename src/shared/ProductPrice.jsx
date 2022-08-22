@@ -5,7 +5,7 @@ const ProductPrice = ({ product }) => {
         <span style={{color:'red'}}>LE {product.netPrice} ({product.discountPercentage}% OFF)</span>
       </p>
     ) : (
-      <span>LE {product.netPrice}</span>
+      <p>LE {product.netPrice}</p>
     );
   };
 

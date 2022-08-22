@@ -1,12 +1,13 @@
 import './ProfileOrders.css'
 import { Link } from 'react-router-dom'
-import { DispatchUserContext, UserContext } from "../../../contexts/userContext"
+import { UserContext } from "../../../contexts/userContext"
 import { Empty, Image, Popover, Descriptions, Button, Steps } from "antd"
 import { CaretDownOutlined } from '@ant-design/icons'
-import { UserOutlined } from '@ant-design/icons';
+import { CarOutlined, CarryOutOutlined, TabletOutlined } from '@ant-design/icons';
 import { useContext } from 'react';
 import ConfirmModal from './ConfirmModal'
 import ProductPrice from '../../../shared/ProductPrice'
+import { useEffect, useState } from 'react'
 const { Step } = Steps;
 
 const ShippingAddress = (props) => {
@@ -25,38 +26,84 @@ const ShippingAddress = (props) => {
     )
 }
 
-const steps = [
-    {
-        id:1,
-        title: 'Pending',
-        status: 'wait',
-        icon: <UserOutlined />
-    },
-    {
-        id:2,
-        title: 'Canceled',
-        status: 'error',
-    },
-    {
-        id:3,
-        title: 'Shipped',
-        status: 'wait',
-        icon: <UserOutlined />
-    },
-    {
-        id:4,
-        title: 'Delivered',
-        status: 'wait',
-        icon: <UserOutlined />
-    },
-]
+// const steps = [
+//     {
+//         id: 1,
+//         title: 'Pending',
+//         status: 'wait',
+//         icon: <TabletOutlined />
+//     },
+//     {
+//         id: 2,
+//         title: 'Canceled',
+//         status: 'error',
+//     },
+//     {
+//         id: 3,
+//         title: 'Shipped',
+//         status: 'wait',
+//         icon: <CarOutlined />
+//     },
+//     {
+//         id: 4,
+//         title: 'Delivered',
+//         status: 'wait',
+//         icon: <CarryOutOutlined />
+//     },
+// ]
 
 
 const ProfileOrders = () => {
     const user = useContext(UserContext)
+    const [orders, setOrders] = useState([])
+    useEffect(() => {
+        setOrders(user.orders.map(order => {
+            let tempSteps = [
+                {
+                    id: 1,
+                    title: 'Pending',
+                    status: 'wait',
+                    icon: <TabletOutlined />
+                },
+                {
+                    id: 2,
+                    title: 'Canceled',
+                    status: 'error',
+                },
+                {
+                    id: 3,
+                    title: 'Shipped',
+                    status: 'wait',
+                    icon: <CarOutlined />
+                },
+                {
+                    id: 4,
+                    title: 'Delivered',
+                    status: 'wait',
+                    icon: <CarryOutOutlined />
+                },
+            ]
+            if (order.state !== 'canceled') {
+                tempSteps.splice(1, 1)
+                let currStepIndex = tempSteps.findIndex(step => step.title.toLowerCase() === order.state)
+                for (let i = 0; i <= currStepIndex; i++) {
+                    tempSteps[i].status = 'finish'
+                }
+            } else {
+                let currStepIndex = tempSteps.findIndex(step => step.title.toLowerCase() === order.state)
+                for (let i = 0; i < currStepIndex; i++) {
+                    tempSteps[i].status = 'finish'
+                }
+            }
+            return {
+                ...order,
+                displayedState: tempSteps
+            }
+        }))
+    }, [user])
 
     return (
-        user.orders.length === 0 ? <Empty
+        orders.length === 0 ? <Empty
             description={
                 <span>
                     No Orders yet
@@ -65,21 +112,7 @@ const ProfileOrders = () => {
         >
         </Empty> :
             <div className='orders-container'>
-                {user.orders.map(order => {
-                    // set order current state on status track
-                    let tempSteps = [...steps]
-                    if (order.state !== 'canceled') {
-                        tempSteps.splice(1, 1)
-                        let currStepIndex = tempSteps.findIndex(step=> step.title.toLowerCase() === order.state)
-                        for( let i = 0; i <= currStepIndex; i++){
-                            tempSteps[i].status = 'finish'
-                        }
-                    } else {
-                        let currStepIndex = tempSteps.findIndex(step=> step.title.toLowerCase() === order.state)
-                        for( let i = 0; i < currStepIndex; i++){
-                            tempSteps[i].status = 'finish'
-                        }
-                    }
+                {orders.map(order => {
                     return (
                         <div key={order._id} className="order-container">
                             <div className="order-header">
@@ -91,12 +124,12 @@ const ProfileOrders = () => {
                                 </div>
                                 <h1>ORDER # {order._id}</h1>
                             </div>
-                            <Steps className='order-steps' current={1} status="error">
-                                {tempSteps.map(step => (<Step key={step.id} status={step.status} title={step.title} icon={step.icon} />))}
+                            <Steps className='order-steps' status="error">
+                                {order.displayedState.map(step => (<Step key={step.id} status={step.status} title={step.title} icon={step.icon} />))}
                             </Steps>
                             <div className="order-body">
                                 <div className="order-body-left">
-                                    <h3>{order.state === 'delivered'?'delivered on':'arriving on'} {new Date(Date.parse(order.arrivingDate)).toLocaleDateString()}</h3>
+                                    <h3>{order.state === 'delivered' ? 'delivered on' : 'arriving on'} {new Date(Date.parse(order.arrivingDate)).toLocaleDateString()}</h3>
                                     <div className="order-body-left-details">
                                         {order.orderItems.map(orderItem => (<><div key={orderItem._id} className="order-body-left-details-item">
                                             <Image className='order-body-left-details-item-image' src={orderItem.product.photos[0].src} />
@@ -109,9 +142,9 @@ const ProfileOrders = () => {
                                         </div></>))}
                                     </div>
                                 </div>
-                                {order.state !== 'canceled' && order.state !== 'delivered'?<div className="order-body-right">
+                                {order.state !== 'canceled' && order.state !== 'delivered' ? <div className="order-body-right">
                                     <ConfirmModal id={order._id} />
-                                </div>:''}
+                                </div> : ''}
                             </div>
                         </div>
                     )
