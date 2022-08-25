@@ -1,0 +1,9 @@
+.main-lists-container {
+    display: flex;
+    padding: 0 2vw;
+    gap: 1vw;
+}
+
+.main-list-photo {
+    width: 47vw;
+}

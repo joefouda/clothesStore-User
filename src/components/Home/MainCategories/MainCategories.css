@@ -40,17 +40,17 @@
     font-weight: 500;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 1000px) {
     .main-categories-container {
         grid-template-columns: repeat(2, 1fr);
     }
     .main-categories-item {
-        height: 300px
+        height: 600px
     }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 700px) {
     .main-categories-item {
-        height: 350px
+        height: 300px
     }
 }

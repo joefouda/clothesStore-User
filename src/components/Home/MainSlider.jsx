@@ -21,9 +21,9 @@ const MainSlider = () => {
     const { openNotification } = useContext(NotificationContext)
     const [webPhotos, setWebPhotos] = useState([])
     const [mobilePhotos, setMobilePhotos] = useState([])
-    const [webView, setWebView] = useState(window.matchMedia('(min-width: 700px)').matches)
+    const [webView, setWebView] = useState(window.matchMedia('(min-width: 1000px)').matches)
     const handleResize = () => {
-        setWebView(window.matchMedia('(min-width: 700px)').matches)
+        setWebView(window.matchMedia('(min-width: 1000px)').matches)
     }
     useEffect(() => {
         window.addEventListener('resize', handleResize)
@@ -32,12 +32,12 @@ const MainSlider = () => {
 
     useEffect(()=> {
         axios.get('http://localhost:3000/api/v1/other/mainSliderWebPhotos').then((res)=>{
-            setWebPhotos(res.data?.mainSlider?.photos || [])
+            setWebPhotos(res.data?.result?.photos || [])
         }).catch(error=>{
             openNotification('error', 'Server Error')
         })
         axios.get('http://localhost:3000/api/v1/other/mainSliderMobilePhotos').then((res)=>{
-            setMobilePhotos(res.data?.mainSlider?.photos || [])
+            setMobilePhotos(res.data?.result?.photos || [])
         }).catch(error=>{
             openNotification('error', 'Server Error')
         })
