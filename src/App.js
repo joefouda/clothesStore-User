@@ -39,6 +39,7 @@ function App() {
                 <Route path='/' element={<HomePage />} />
                 <Route path='/filter/:category' element={<FilterPage />} />
                 <Route path='/filter/:category/:subCategory' element={<FilterPage />} />
+                <Route path='/filter/:category/:subCategory/:displayedTitle' element={<FilterPage />} />
                 <Route path='/:category/:subCategory/:model/:product/:id' element={<ProductDetailsPage />} />
                 <Route path='/profile' element={<LogInGuard />}>
                   <Route path='/profile' element={<UserProfilePage />} />

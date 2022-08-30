@@ -8,9 +8,10 @@ import {Badge} from 'antd'
 
 const FeaturedSection = ()=> {
     const [products, setProducts] = useState([])
+    const [featuredDisplayTitle, setFeaturedDisplayTitle] = useState('')
     const { openNotification } = useContext(NotificationContext)
     useEffect(()=> {
-        axios.get('http://localhost:3000/api/v1/product/specialCategory/special-3')
+        axios.get('http://localhost:3000/api/v1/product/mainList/featured')
             .then(res=> {
                 setProducts(res.data.products)
             }).catch(()=> {
@@ -18,9 +19,18 @@ const FeaturedSection = ()=> {
             })
     }, [])
 
+    useEffect(()=> {
+        axios.get('http://localhost:3000/api/v1/mainList/displayedTitle/featured')
+            .then(res=> {
+                setFeaturedDisplayTitle(res.data.title)
+            }).catch(()=> {
+                openNotification('error', 'Server Error')
+            })
+    }, [])
+
     return (
         <div className="featured-section-container">
-            <h1 className="featured-section-heading">FEATURED</h1>
+            <h1 className="featured-section-heading">{featuredDisplayTitle}</h1>
             <div className="featured-products-container">
                 {products.map(product=>(
                     <Link key={product._id} to={`/${product.category.name}/${product.subCategory.name}/${product.model.name}/${product.name}/${product._id}`}>

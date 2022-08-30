@@ -2,6 +2,7 @@ import { Carousel } from 'antd';
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { NotificationContext } from '../../contexts/notificationContext';
+import { Link } from 'react-router-dom'
 
 
 
@@ -19,6 +20,7 @@ const contentStyle = {
 
 const MainSlider = () => {
     const { openNotification } = useContext(NotificationContext)
+    const [displayedTitle, setDisplayedTitle] = useState('')
     const [webPhotos, setWebPhotos] = useState([])
     const [mobilePhotos, setMobilePhotos] = useState([])
     const [webView, setWebView] = useState(window.matchMedia('(min-width: 1000px)').matches)
@@ -42,20 +44,32 @@ const MainSlider = () => {
             openNotification('error', 'Server Error')
         })
     },[])
+
+    useEffect(()=> {
+        axios.get('http://localhost:3000/api/v1/mainList/displayedTitle/main-slider')
+            .then(res=> {
+                setDisplayedTitle(res.data.title)
+            }).catch(()=> {
+                openNotification('error', 'Server Error')
+            })
+    }, [])
+
     return (
-        <Carousel effect='fade' autoplay autoplaySpeed={2000} dots={false}>
-            {webView ? 
-            webPhotos.map(photo=>(<div key={photo.id}>
-                <div style={{ ...contentStyle, backgroundImage: `url("${photo.src}")` }}>
+        <Link to={`/filter/mainList/main-slider/${displayedTitle}`}>
+            <Carousel effect='fade' autoplay autoplaySpeed={2000} dots={false}>
+                {webView ? 
+                webPhotos.map(photo=>(<div key={photo.id}>
+                    <div style={{ ...contentStyle, backgroundImage: `url("${photo.src}")` }}>
 
-                </div>
-            </div>)) : 
-            mobilePhotos.map(photo=>(<div key={photo.id}>
-                <div style={{ ...contentStyle, backgroundImage: `url("${photo.src}")` }}>
+                    </div>
+                </div>)) : 
+                mobilePhotos.map(photo=>(<div key={photo.id}>
+                    <div style={{ ...contentStyle, backgroundImage: `url("${photo.src}")` }}>
 
-                </div>
-            </div>))}
-        </Carousel>
+                    </div>
+                </div>))}
+            </Carousel>
+        </Link>
     )
 };
 

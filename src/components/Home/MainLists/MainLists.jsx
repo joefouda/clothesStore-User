@@ -8,8 +8,8 @@ const MainLists = ()=> {
     const { openNotification } = useContext(NotificationContext) 
     const [mainLists, setMainLists] = useState([])
     useEffect(()=> {
-        axios.get('http://localhost:3000/api/v1/other/mainLists').then((res)=>{
-            setMainLists(res.data?.result?.MainLists || [])
+        axios.get('http://localhost:3000/api/v1/mainList').then((res)=>{
+            setMainLists(res.data.mainLists.slice(0,2))
         }).catch(error=>{
             openNotification('error', 'Server Error')
         })
@@ -17,7 +17,7 @@ const MainLists = ()=> {
     return (
         <div className='main-lists-container'>
             {mainLists.map(item=> (
-                <Link to={`/filter/specialCategory/${item.title}`}>
+                <Link key={item._id} to={`/filter/mainList/${item.title}/${item.displayedTitle}`}>
                     <img className='main-list-photo' src={item.photo} />
                 </Link>
             ))}

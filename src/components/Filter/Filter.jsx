@@ -18,17 +18,26 @@ const Filter = () => {
     const antIcon = <LoadingOutlined style={{ fontSize: 40, color:'black' }} />
     useEffect(() => {
         toggleProgress()
-        levels.subCategory ? axios.get(`http://localhost:3000/api/v1/product/subCategory/${levels.subCategory}`).then((res) => {
-            setProducts(res.data.products)
-            toggleProgress()
-        }).catch(error=>{
-            openNotification('error', 'Server Error')
-        }) : axios.get(`http://localhost:3000/api/v1/product/category/${levels.category}`).then((res) => {
-            setProducts(res.data.products)
-            toggleProgress()
-        }).catch(error=>{
-            openNotification('error', 'Server Error')
-        })
+        if(levels.category === 'mainList') {
+            axios.get(`http://localhost:3000/api/v1/product/mainList/${levels.subCategory}`).then((res) => {
+                setProducts(res.data.products)
+                toggleProgress()
+            }).catch(error=>{
+                openNotification('error', 'Server Error')
+            })
+        } else {
+            levels.subCategory ? axios.get(`http://localhost:3000/api/v1/product/subCategory/${levels.subCategory}`).then((res) => {
+                setProducts(res.data.products)
+                toggleProgress()
+            }).catch(error=>{
+                openNotification('error', 'Server Error')
+            }) : axios.get(`http://localhost:3000/api/v1/product/category/${levels.category}`).then((res) => {
+                setProducts(res.data.products)
+                toggleProgress()
+            }).catch(error=>{
+                openNotification('error', 'Server Error')
+            })
+        }
     }, [levels.category, levels.subCategory])
     return (
         <>
