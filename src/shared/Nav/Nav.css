@@ -1,9 +1,13 @@
 .Nav{
+    z-index: 100;
+    background-color: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 1vw;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+    position: sticky;
+    top: 0;
 }
 
 .Nav-start {

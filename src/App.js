@@ -10,6 +10,7 @@ import UserProfilePage from './pages/UserProfile';
 import CheckoutPage from './pages/Checkout';
 import LoginPage from './pages/Login'
 import SignupPage from './pages/Signup'
+import AboutPage from './pages/About'
 import PageNotFound from './components/PageNotFound';
 import MayRender from './shared/MayRender';
 import { LogInGuard, LogOutGuard, Redirect } from './auth/authGuards';
@@ -17,6 +18,19 @@ import CartProvider from './contexts/cartContext';
 import FavoriteProvider from './contexts/favoriteContext';
 import NotificationProvider from './contexts/notificationContext';
 import UserProvider from './contexts/userContext';
+
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 
 function App() {
@@ -26,6 +40,7 @@ function App() {
         <FavoriteProvider>
           <CartProvider>
             <BrowserRouter>
+              <ScrollToTop />
               <MayRender>
                 <Nav />
               </MayRender>
@@ -37,6 +52,7 @@ function App() {
                   <Route path="/signup" element={<SignupPage />} />
                 </Route>
                 <Route path='/' element={<HomePage />} />
+                <Route path='/about' element={<AboutPage />} />
                 <Route path='/filter/:category' element={<FilterPage />} />
                 <Route path='/filter/:category/:subCategory' element={<FilterPage />} />
                 <Route path='/filter/:category/:subCategory/:displayedTitle' element={<FilterPage />} />

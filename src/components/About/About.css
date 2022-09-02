@@ -1,0 +1,52 @@
+.about-container {
+    margin: 5vh 0;
+}
+
+.about-heading {
+    font-weight: 500;
+}
+
+.name-section {
+    background-color:beige;
+}
+
+.name-section, .job-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 5vh 10vw;
+    font-size: 1.2rem;
+}
+
+.fashion-section {
+    font-size: 1.2rem;
+    padding: 5vh 10vw;
+    background-color: beige;
+}
+
+.name-section-photo, .job-section-photo {
+    width: 30vw;
+}
+
+.about-paragraph {
+    width: 40vw;
+}
+
+.special-word {
+    font-weight: 700;
+}
+
+@media screen and (max-width: 700px) {
+    .name-section, .job-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .name-section-photo, .job-section-photo {
+        width: 100%;
+    }
+    
+    .about-paragraph {
+        width: 100%;
+    }
+}

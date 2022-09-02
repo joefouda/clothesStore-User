@@ -1,3 +1,7 @@
+.footer-container {
+    margin-top: 3vh;
+}
+
 .footer-icons-container {
     display: flex;
     justify-content: center;
@@ -16,4 +20,27 @@
 
 .footer-icon:focus, .footer-icon:active{
     color: black !important
+}
+
+.payment-section {
+    text-align: center;
+}
+
+.links-section {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: space-around;
+}
+
+.chunk-list {
+    padding: 0;
+    list-style: none;
+}
+
+@media screen and (max-width: 1000px) {
+    .links-section {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: space-around;
+    }
 }
