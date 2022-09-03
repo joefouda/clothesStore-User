@@ -3,6 +3,10 @@ import { Button, Layout } from 'antd';
 import { InstagramOutlined, FacebookOutlined, WhatsAppOutlined  } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom';
 import { FormOutlined, PhoneOutlined } from '@ant-design/icons'
+import payment1 from '../../assets/payment1.jpeg'
+import payment2 from '../../assets/payment2.jpeg'
+import payment3 from '../../assets/payment3.jpeg'
+
 const { Footer } = Layout;
 
 const MainFooter = ()=> {
@@ -10,8 +14,11 @@ const MainFooter = ()=> {
     return (
         <div className='footer-container'>
             <div className='payment-section'>
-                <h3>Payments Accepted</h3>
-                <p>payments</p>
+                <div className="payment-photos">
+                    <img src={payment1} className="payment-photo"/>
+                    <img src={payment2} className="payment-photo"/>
+                    <img src={payment3} className="payment-photo"/>
+                </div>
             </div>
             <Footer>
                 <div className='links-section'>
@@ -56,12 +63,12 @@ const MainFooter = ()=> {
                     <a className='footer-icon' href="https://www.facebook.com/Butron-103517865190017" target='_blank'><FacebookOutlined /></a>
                     <a className='footer-icon' href="https://wa.me/201270777325" target='_blank'><WhatsAppOutlined/></a>
                 </div>
-                <p>
+                <p className='copyright-text'>
                     © BUTRON's business concept is to offer fashion and quality at the best price in a sustainable way.
                     BUTRON has since it was founded in 2020 grown into one of the world's leading fashion companies. The
                     content of this site is copyright-protected and is the property of BUTRON
                 </p>
-                <p style={{textAlign:'center'}}>BUTRO'N ©2022 Created by joeFouda</p>
+                <p style={{textAlign:'center'}}>BUTRON ©2022</p>
             </Footer>
         </div>
     )

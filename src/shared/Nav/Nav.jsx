@@ -21,19 +21,13 @@ const Nav = () => {
   const { openNotification } = useContext(NotificationContext)
   const [categories, setCategories] = useState([])
   const [specialNavItem, setSpecialNavItem] = useState('')
-  const [searchPlacement, setSearchPlacement] = useState(window.matchMedia('(max-width: 1000px)').matches)
   const [userControlVisable, ToggleUserControlVisable] = useToggle(false);
   const [mobileListVisable, toggleMobileListVisable] = useToggle(false);
-  const [mobileSearchVisable, ToggleMobileSearchVisable] = useToggle(false);
+  const [searchVisable, toggleSearchVisable] = useToggle(false);
   const [favoriteVisable, ToggleFavoriteVisable] = useToggle(false);
   const cart = useContext(CartContext)
   const { cartVisable, toggleCartVisable } = useContext(CartVisableContext)
   const favorites = useContext(FavoriteContext)
-
-  const handleSearchPlacement = ()=>{
-    setSearchPlacement(window.matchMedia('(max-width: 1000px)').matches)
-    ToggleMobileSearchVisable()
-  }
 
   useEffect(() => {
     axios.get('http://localhost:3000/api/v1/category').then((res) => {
@@ -41,59 +35,63 @@ const Nav = () => {
     })
   }, [])
 
-  useEffect(()=> {
+  useEffect(() => {
     axios.get('http://localhost:3000/api/v1/mainList/displayedTitle/nav-link')
-      .then(res=> {
+      .then(res => {
         setSpecialNavItem(res.data.title)
-      }).catch(()=> {
+      }).catch(() => {
         openNotification('error', 'Server Error')
       })
   }, [])
 
   return (
+    <>
     <div className='Nav'>
-      <div className='Nav-mobile-nav Nav-buttons'>
-        <UnorderedListOutlined className='Nav-icon' onClick={toggleMobileListVisable} />
-        <SearchOutlined className='Nav-icon' onClick={handleSearchPlacement} />
-      </div>
-        <div className='Nav-start'>
-        <Link to='/'><img src={img} style={{ maxWidth: '132px' }} /></Link>
-        <div className="Nav-normal-nav Nav-links">
-          <Link to={`/filter/mainList/nav-link/${specialNavItem}`}><span className='nav-link' style={{color:'#C71A3A'}}>{specialNavItem}</span></Link>
-          {categories.map(category => <PopOver key={category._id} category={category} title={category.name} />)}
+      <div className='logo-section'>
+        <div className='Nav-buttons'>
+          <UnorderedListOutlined className='Nav-mobile-nav Nav-icon' onClick={toggleMobileListVisable} />
+          <UserOutlined className='Nav-normal-nav Nav-icon' onClick={ToggleUserControlVisable} />
+          <SearchOutlined className='Nav-icon' onClick={toggleSearchVisable}/>
+        </div>
+        <div>
+          <Link to='/'><img src={img} style={{ maxWidth: '132px' }} /></Link>
+        </div>
+        <div className='Nav-buttons'>
+          <Badge size="default" count={favorites.length} style={{ zIndex: 1 }}>
+            <HeartOutlined className='Nav-icon' onClick={ToggleFavoriteVisable} />
+          </Badge>
+          <Badge size="default" count={cart.length}>
+            <ShoppingCartOutlined className='Nav-icon' onClick={toggleCartVisable} />
+          </Badge>
         </div>
       </div>
-      <div className='Nav-buttons'>
-        <SearchOutlined className='Nav-normal-nav Nav-icon' onClick={handleSearchPlacement} />
-        <UserOutlined className='Nav-normal-nav Nav-icon' onClick={ToggleUserControlVisable} />
-        <Badge size="default" count={favorites.length} style={{zIndex:1}}>
-          <HeartOutlined className='Nav-icon' onClick={ToggleFavoriteVisable} />
-        </Badge>
-        <Badge size="default" count={cart.length}>
-          <ShoppingCartOutlined className='Nav-icon' onClick={toggleCartVisable} />
-        </Badge>
+
+      <div className="Nav-normal-nav Nav-links">
+        <Link to={`/filter/mainList/nav-link/${specialNavItem}`}><span className='nav-link' style={{ color: '#C71A3A' }}>{specialNavItem}</span></Link>
+        {categories.map(category => <PopOver key={category._id} category={category} title={category.name} />)}
       </div>
-      <Drawer title="Cart" placement="right" onClose={toggleCartVisable} visible={cartVisable}>
-        <CartPreview />
-      </Drawer>
-
-      <Drawer placement="right" onClose={ToggleUserControlVisable} visible={userControlVisable}>
-        <UserControl ToggleUserControlVisable={ToggleUserControlVisable} />
-      </Drawer>
-
-      <Drawer placement="right" onClose={ToggleFavoriteVisable} visible={favoriteVisable}>
-        <Favorites ToggleFavoriteVisable={ToggleFavoriteVisable} />
-      </Drawer>
-
-      <Drawer placement="left" onClose={toggleMobileListVisable} visible={mobileListVisable}>
-        <MobileList toggleMobileListVisable={toggleMobileListVisable} categories={categories}/>
-      </Drawer>
-
-      <Drawer placement={searchPlacement?'left':'right'} onClose={ToggleMobileSearchVisable} visible={mobileSearchVisable}>
-        <SearchContent ToggleMobileSearchVisable={ToggleMobileSearchVisable} />
-      </Drawer>
-
     </div>
+
+    <Drawer title="Cart" placement="right" onClose={toggleCartVisable} visible={cartVisable}>
+      <CartPreview />
+    </Drawer>
+
+    <Drawer placement="left" onClose={ToggleUserControlVisable} visible={userControlVisable}>
+      <UserControl ToggleUserControlVisable={ToggleUserControlVisable} />
+    </Drawer>
+
+    <Drawer placement="right" onClose={ToggleFavoriteVisable} visible={favoriteVisable}>
+      <Favorites ToggleFavoriteVisable={ToggleFavoriteVisable} />
+    </Drawer>
+
+    <Drawer placement="left" onClose={toggleMobileListVisable} visible={mobileListVisable}>
+      <MobileList toggleMobileListVisable={toggleMobileListVisable} categories={categories} />
+    </Drawer>
+
+    <Drawer placement='left' onClose={toggleSearchVisable} visible={searchVisable}>
+      <SearchContent toggleSearchVisable={toggleSearchVisable} />
+    </Drawer>
+    </>
   )
 };
 

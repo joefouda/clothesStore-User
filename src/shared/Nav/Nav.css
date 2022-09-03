@@ -1,18 +1,16 @@
 .Nav{
     z-index: 100;
     background-color: #fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     padding: 0 1vw;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
     position: sticky;
     top: 0;
 }
 
-.Nav-start {
+.logo-section {
     display: flex;
-    gap: 2vw;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .ant-drawer-content-wrapper{
@@ -42,8 +40,9 @@
 
 .Nav-links {
     display: flex;
-    align-items: center;
+    justify-content: center;
     gap: 1vw;
+    padding: 1vh 0 3vh 0;
 }
 
 .Nav-links .ant-btn:hover, .ant-btn:focus {

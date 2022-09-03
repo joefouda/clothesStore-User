@@ -26,6 +26,10 @@
     text-align: center;
 }
 
+.payment-photo {
+    width: 7vw;
+}
+
 .links-section {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -37,10 +41,19 @@
     list-style: none;
 }
 
+.copyright-text{
+    margin: 5vh auto ;
+    width: 50vw;
+}
+
 @media screen and (max-width: 1000px) {
     .links-section {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         justify-content: space-around;
+    }
+    .copyright-text{
+        margin: 2vh 0 ;
+        width: 100%;
     }
 }
