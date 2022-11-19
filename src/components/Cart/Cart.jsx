@@ -48,19 +48,15 @@ const CartPreview = () => {
                                     width='100%'
                                     height='auto'
                                     alt="logo"
-                                    src={item.product.photos[0].src}
+                                    src={item.product.colors[0].photos[0].src}
                                 />
                             }
                         >
                             <List.Item.Meta
-                                title={<Link to={`/${item.product.category.name}/${item.product.subCategory.name}/${item.product.model.name}/${item.product.name}/${item.product._id}`} >{item.product.name}</Link>}
+                                title={<Link to={`/${item.product.category.name}/${item.product.subCategory.name}/${item.product.name}/${item.product._id}`} >{item.product.name}</Link>}
                                 description={`quantity: ${item.quantity}`}
                             />
                             <ProductPrice product={item.product}/>
-                            {Object.keys(item.product.variants).reduce((total, variantkey, index) => {
-                                if (index === Object.keys(item.product.variants).length - 1) return total + `${variantkey}: ${item.product.variants[variantkey]}`
-                                return total + `${variantkey}: ${item.product.variants[variantkey]}, `
-                            }, '')}
                         </List.Item>
                     )}
                 />

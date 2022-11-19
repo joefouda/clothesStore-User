@@ -34,18 +34,14 @@ const Favorites = (props) => {
                                     width='100%'
                                     height='auto'
                                     alt="logo"
-                                    src={item.photos[0].src}
+                                    src={item.colors[0].photos[0].src}
                                 />
                             }
                         >
                             <List.Item.Meta
-                                title={<Link to={`/${item.category.name}/${item.subCategory.name}/${item.model.name}/${item.name}/${item._id}`} onClick={()=>props.ToggleFavoriteVisable()}>{item.name}</Link>}
+                                title={<Link to={`/${item.category.name}/${item.subCategory.name}/${item.name}/${item._id}`} onClick={()=>props.ToggleFavoriteVisable()}>{item.name}</Link>}
                             />
                             <ProductPrice product={item} />
-                            {Object.keys(item.variants).reduce((total, variantkey, index) => {
-                                if (index === Object.keys(item.variants).length - 1) return total + `${variantkey}: ${item.variants[variantkey]}`
-                                return total + `${variantkey}: ${item.variants[variantkey]}, `
-                            }, '')}
                         </List.Item>
                     )}
                 />

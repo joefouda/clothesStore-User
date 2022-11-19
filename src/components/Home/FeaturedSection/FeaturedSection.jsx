@@ -13,6 +13,7 @@ const FeaturedSection = ()=> {
     useEffect(()=> {
         axios.get('http://localhost:3000/api/v1/product/mainList/featured')
             .then(res=> {
+                console.log(res)
                 setProducts(res.data.products)
             }).catch(()=> {
                 openNotification('error', 'Server Error')
@@ -30,19 +31,19 @@ const FeaturedSection = ()=> {
 
     return (
         <div className="featured-section-container">
-            <h1 className="featured-section-heading">{featuredDisplayTitle}</h1>
+            {products.length !== 0 && <h1 className="featured-section-heading">{featuredDisplayTitle}</h1>}
             <div className="featured-products-container">
                 {products.map(product=>(
-                    <Link key={product._id} to={`/${product.category.name}/${product.subCategory.name}/${product.model.name}/${product.name}/${product._id}`}>
+                    <Link key={product._id} to={`/${product.category.name}/${product.subCategory.name}/${product.name}/${product._id}`}>
                         {product.discountPercentage > 0 ?
                             <Badge.Ribbon text="SALE" color="red">
                                 <div className="featured-product-card">
-                                    <img className='product-image' src={product.photos[0].src}/>
+                                    <img className='product-image' src={product.colors[0].photos[0].src}/>
                                     <ProductPrice product={product}/>
                                 </div>
                             </Badge.Ribbon>:
                             <div className="featured-product-card">
-                                <img className='product-image' src={product.photos[0].src}/>
+                                <img className='product-image' src={product.colors[0].photos[0].src}/>
                                 <ProductPrice product={product}/>
                             </div>
                         }

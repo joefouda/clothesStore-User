@@ -19,7 +19,7 @@ const ProductCard = (props) => {
   const handleNavigate = () => {
     navigate(
       `/${category || props.product.category.name}/${subCategory || props.product.subCategory.name
-      }/${props.product.model.name}/${props.product.name}/${props.product._id}`
+      }/${props.product.name}/${props.product._id}`
     );
   };
 
@@ -38,7 +38,7 @@ const ProductCard = (props) => {
       <Card
         hoverable
         cover={
-          <img alt={props.product.name} src={props.product.photos[0].src} />
+          <img alt={props.product.name} src={props.product.colors[0].photos[0].src} />
         }
         className="Product-Card"
         actions={[
@@ -58,7 +58,7 @@ const ProductCard = (props) => {
     </Badge.Ribbon>: 
     <Card
       hoverable
-      cover={<img alt={props.product.name} src={props.product.photos[0].src} />}
+      cover={<img alt={props.product.name} src={props.product.colors[0].photos[0].src} />}
       className="Product-Card"
       actions={[
         <EyeOutlined onClick={handleNavigate} />,

@@ -1,4 +1,4 @@
-import { Avatar, List, Space, Descriptions, Image } from 'antd';
+import { List, Descriptions, Image } from 'antd';
 import { CartContext } from '../../../contexts/cartContext'
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
