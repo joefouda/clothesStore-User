@@ -19,13 +19,13 @@ const EditModal = (props) => {
     }
     const handleSubmit = ()=>{
         if(authentication.isAuthinticated()){
-            axios.put('http://localhost:3000/api/v1/orderitem',{orderItemID:props.orderItem._id, quantity, orderPrice:props.orderItem.product.price*quantity}).then(res=>{
+            axios.put('http://localhost:3000/api/v1/orderitem',{orderItemID:props.orderItem._id, quantity, orderPrice:props.orderItem.product.netPrice*quantity}).then(res=>{
                 dispatchCart({type:'UPDATE', orderItem:res.data.orderItem})
                 openNotification('success', 'quantity updated successfully')
                 console.log(res.data.orderItem)
             })
         }else {
-            dispatchCart({type:'UPDATE', id:props.orderItem.product._id, quantity, orderPrice:props.orderItem.product.price*quantity})
+            dispatchCart({type:'UPDATE', id:props.orderItem.product._id, quantity, orderPrice:props.orderItem.product.netPrice*quantity})
             openNotification('success', 'quantity updated successfully')
         }
         toggleModalVisible()

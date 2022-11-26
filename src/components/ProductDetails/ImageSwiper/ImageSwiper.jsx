@@ -29,7 +29,7 @@ export default function ImageSwiper(props) {
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper2"
       >
-        {props.photos.map(photo=>(<SwiperSlide key={photo.id}>
+        {props.photos.map(photo=>(<SwiperSlide key={photo._id}>
           <Image src={photo.src} />
         </SwiperSlide>))}
       </Swiper>
@@ -42,7 +42,7 @@ export default function ImageSwiper(props) {
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper"
       >
-        {props.photos.map(photo=>(<SwiperSlide key={photo.id}>
+        {props.photos.map(photo=>(<SwiperSlide key={photo._id}>
           <img src={photo.src} />
         </SwiperSlide>))}
       </Swiper>

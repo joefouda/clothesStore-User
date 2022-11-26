@@ -76,6 +76,7 @@ const Login = (props) => {
                         'Authorization': localStorage.getItem('token')
                     }
                 }).then(res => {
+                    console.log(res)
                     dispatchCart({ type: 'MERGE', cart: res.data.cart })
                 }).catch(error => {
                     openNotification('error', 'Server Error')

@@ -30,33 +30,23 @@ const ProductDetails = () => {
     const dispatchFavorite = useContext(DispatchFavoriteContext)
     const favorites = useContext(FavoriteContext)
     const { openNotification } = useContext(NotificationContext)
-
     const [product, setProduct] = useState({})
     const [photos, setPhotos] = useState([])
     const [quantity, setQuantity] = useState(1)
-    const [variants, setVariants] = useState({})
-    const [query, setQuery] = useState({})
+    const [currentStock, setCurrentStock] = useState(0)
+    const [currentColors, setCurrentColors] = useState([])
+    const [selectedColor, setSelectedColor] = useState({})
+    const [selectedSize, setSelectedSize] = useState('')
     const levels = useParams()
-    const navigate = useNavigate()
-
-
-    const handleChange = (name, value) => {
-        let finalQuery = {...query,[name]: value}
-        axios.put(`http://localhost:3000/api/v1/product/variants`, {model:product.model._id,query: finalQuery}).then((res) => {
-            console.log(res)
-            navigate(`/${levels.category}/${levels.subCategory}/${levels.model}/${res.data.product.name}/${res.data.product._id}`)
-        }).catch(error=>{
-            console.log(error)
-            openNotification('error', 'Server Error')
-        })
-    };
 
     const handleAddToCart = () => {
         toggleProgress()
         let orderItem = {
             product,
             quantity,
-            orderPrice: quantity * product.netPrice
+            orderPrice: quantity * product.netPrice,
+            selectedColor,
+            selectedSize
         }
         dispatch({ type: 'ADD', orderItem })
         if (authentication.isAuthinticated()) {
@@ -98,9 +88,11 @@ const ProductDetails = () => {
         toggleProgress()
         axios.get(`http://localhost:3000/api/v1/product/${levels.id}`).then((res) => {
             setProduct(res.data.product)
-            setQuery(res.data.product.variants)
-            setPhotos(res.data.product.photos)
-            setVariants(res.data.product.model.variants)
+            setPhotos(res.data.product.colors[0].photos)
+            setCurrentStock(res.data.product.colors[0].sizes[0].stock)
+            setCurrentColors(res.data.product.colors)
+            setSelectedColor(res.data.product.colors[0])
+            setSelectedSize(res.data.product.colors[0].sizes[0].size)
             toggleProgress()
         }).catch(error => {
             openNotification('error', 'Server Error')
@@ -120,16 +112,20 @@ const ProductDetails = () => {
                     <div className='product-details-rightside-info'>
                         <h1>{product.name}</h1>
                         <ProductPrice product={product} />
-                        {!product.stock ? <Tag color="red">Not Available</Tag> : product.stock === 1 ? <Tag color="gold">Only one Item left</Tag> : <Tag color="green">Available in Stock</Tag>}
+                        {!currentStock ? <Tag color="red">Not Available</Tag> : currentStock === 1 ? <Tag color="gold">Only one Item left</Tag> : <Tag color="green">Available in Stock</Tag>}
+                    </div>
+                    <div className="variants-container">
+                        <div className="colors">
+                            {currentColors.map(color=><div key={color._id} className={`color variant ${selectedColor?.color === color.color?'selected-variant':''}`} onClick={()=>setSelectedColor(color)} style={{backgroundColor:color.color}}></div>)}
+                        </div>
+                        <div className="sizes">
+                            {selectedColor?.sizes?.map(size=><div key={size._id} className={`size variant ${selectedSize === size.size?'selected-variant':''}`} onClick={()=>setSelectedSize(size.size)}>{size.size}</div>)}
+                        </div>
                     </div>
 
-                    {Object.keys(variants).map((variantkey, index) => (<Radio.Group key={index} optionType="button" onChange={(e) => handleChange(variantkey.slice(0, -1), e.target.value)} value={product.variants[variantkey.slice(0, -1)]}>
-                        {variantkey === 'colors' ? variants[variantkey].map((option, index) => <Radio.Button key={index} style={{ backgroundColor: option }} value={option}></Radio.Button>) :
-                            variants[variantkey].map((option, index) => <Radio.Button key={index} value={option}>{option}</Radio.Button>)}
-                    </Radio.Group>))}
-                    <InputNumber min={1} max={product.stock} addonBefore='quantity' value={quantity} disabled={product.stock === 0 ? true : false} onChange={setQuantity} />
+                    <InputNumber min={1} max={currentStock} addonBefore='quantity' value={quantity} disabled={currentStock === 0 ? true : false} onChange={setQuantity} />
                     <div>
-                        <Button type="primary" className="cart-button" icon={<PlusOutlined />} disabled={product.stock === 0 || cart.some(orderItem => orderItem.product._id === product._id) ? true : false} onClick={handleAddToCart}>
+                        <Button type="primary" className="cart-button" icon={<PlusOutlined />} disabled={currentStock === 0 || cart.some(orderItem => orderItem.product._id === product._id) ? true : false} onClick={handleAddToCart}>
                             Add To Cart
                         </Button>
                         {favorites.findIndex(ele => ele._id === product._id) === -1 ? <Button size='large' icon={<HeartOutlined />} disabled={product._id === 1 ? true : false} onClick={handleAddToFavorites} /> :

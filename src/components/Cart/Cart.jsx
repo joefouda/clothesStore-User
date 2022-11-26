@@ -48,7 +48,7 @@ const CartPreview = () => {
                                     width='100%'
                                     height='auto'
                                     alt="logo"
-                                    src={item.product.colors[0].photos[0].src}
+                                    src={item?.selectedColor?.photos[0]?.src}
                                 />
                             }
                         >
@@ -57,6 +57,8 @@ const CartPreview = () => {
                                 description={`quantity: ${item.quantity}`}
                             />
                             <ProductPrice product={item.product}/>
+                            <p>Size : {item.selectedSize} &nbsp; <div style={{display:'inline-block', height: '1vw', width: '2vw', backgroundColor:item.selectedColor.color}}></div></p>
+                    
                         </List.Item>
                     )}
                 />

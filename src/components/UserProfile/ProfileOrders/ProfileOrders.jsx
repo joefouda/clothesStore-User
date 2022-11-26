@@ -132,12 +132,12 @@ const ProfileOrders = () => {
                                     <h3>{order.state === 'delivered' ? 'delivered on' : 'arriving on'} {new Date(Date.parse(order.arrivingDate)).toLocaleDateString()}</h3>
                                     <div className="order-body-left-details">
                                         {order.orderItems.map(orderItem => (<><div key={orderItem._id} className="order-body-left-details-item">
-                                            <Image className='order-body-left-details-item-image' src={orderItem.product.photos[0].src} />
-                                            <Descriptions title={<Link to={`/${orderItem.product.category.name}/${orderItem.product.subCategory.name}/${orderItem.product.model}/${orderItem.product.name}/${orderItem.product._id}`}>{orderItem.product.name}</Link>} bordered>
-                                                <Descriptions.Item label="Qauntity" span={3}>{orderItem.quantity}</Descriptions.Item>
-                                                <Descriptions.Item label="Product Price" span={3}><ProductPrice product={orderItem.product} /></Descriptions.Item>
-                                                <Descriptions.Item label="OrderItem total Price" span={3}>{orderItem.orderPrice}</Descriptions.Item>
-                                                <Descriptions.Item label="Description" span={3}>{orderItem.product.description}</Descriptions.Item>
+                                            <Image className='order-body-left-details-item-image' src={orderItem.selectedColor?.photos[0]?.src} />
+                                            <Descriptions title={<Link to={`/${orderItem.product.category.name}/${orderItem.product.subCategory.name}/${orderItem.product.name}/${orderItem.product._id}`}>{orderItem.product.name}</Link>} bordered>
+                                                <Descriptions.Item key={1} label="Qauntity" span={3}>{orderItem.quantity}</Descriptions.Item>
+                                                <Descriptions.Item key={2} label="Product Price" span={3}><ProductPrice product={orderItem.product} /></Descriptions.Item>
+                                                <Descriptions.Item key={3} label="OrderItem total Price" span={3}>{orderItem.orderPrice}</Descriptions.Item>
+                                                <Descriptions.Item key={4} label="Description" span={3}>{orderItem.product.description}</Descriptions.Item>
                                             </Descriptions>
                                         </div></>))}
                                     </div>
