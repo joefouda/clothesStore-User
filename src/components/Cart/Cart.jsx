@@ -57,7 +57,7 @@ const CartPreview = () => {
                                 description={`quantity: ${item.quantity}`}
                             />
                             <ProductPrice product={item.product}/>
-                            <p>Size : {item.selectedSize} &nbsp; <div style={{display:'inline-block', height: '1vw', width: '2vw', backgroundColor:item.selectedColor.color}}></div></p>
+                            <p>Size : {item.selectedSize} &nbsp; color: <div style={{display:'inline-block', height: '1vw', width: '2vw', backgroundColor:item.selectedColor.color}}></div></p>
                     
                         </List.Item>
                     )}

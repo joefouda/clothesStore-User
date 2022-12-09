@@ -19,6 +19,7 @@ const Checkout = () => {
     const { openNotification } = useContext(NotificationContext)
     const navigate = useNavigate()
     const user = useContext(UserContext)
+    console.log(user)
     const dispatchUser = useContext(DispatchUserContext)
     const cart = useContext(CartContext)
     const dispatchCart = useContext(DispatchContext)

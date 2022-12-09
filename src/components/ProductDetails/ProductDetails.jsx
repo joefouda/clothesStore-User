@@ -84,6 +84,15 @@ const ProductDetails = () => {
         toggleProgress()
     }
 
+    const changeColor = (newColor)=> {
+        toggleProgress()
+        setSelectedColor(newColor)
+        setSelectedSize('')
+        let colorPhotos = product.colors.find(color=>color.color === newColor.color).photos
+        setPhotos(colorPhotos)
+        toggleProgress()
+    }
+
     useEffect(() => {
         toggleProgress()
         axios.get(`http://localhost:3000/api/v1/product/${levels.id}`).then((res) => {
@@ -92,7 +101,7 @@ const ProductDetails = () => {
             setCurrentStock(res.data.product.colors[0].sizes[0].stock)
             setCurrentColors(res.data.product.colors)
             setSelectedColor(res.data.product.colors[0])
-            setSelectedSize(res.data.product.colors[0].sizes[0].size)
+            // setSelectedSize(res.data.product.colors[0].sizes[0].size)
             toggleProgress()
         }).catch(error => {
             openNotification('error', 'Server Error')
@@ -116,16 +125,19 @@ const ProductDetails = () => {
                     </div>
                     <div className="variants-container">
                         <div className="colors">
-                            {currentColors.map(color=><div key={color._id} className={`color variant ${selectedColor?.color === color.color?'selected-variant':''}`} onClick={()=>setSelectedColor(color)} style={{backgroundColor:color.color}}></div>)}
+                            {currentColors.map(color=><div key={color._id} className={`color variant ${selectedColor?.color === color.color?'selected-variant':''}`} onClick={()=>changeColor(color)} style={{backgroundColor:color.color}}></div>)}
                         </div>
-                        <div className="sizes">
-                            {selectedColor?.sizes?.map(size=><div key={size._id} className={`size variant ${selectedSize === size.size?'selected-variant':''}`} onClick={()=>setSelectedSize(size.size)}>{size.size}</div>)}
-                        </div>
+                        
+                    </div>
+                    <div className="variants-container">
+                    <div className="sizes">
+                        {selectedColor?.sizes?.map(size=><div key={size._id} className={`size variant ${selectedSize === size.size?'selected-variant':''}`} onClick={()=>setSelectedSize(size.size)}>{size.size}</div>)}
+                    </div>
                     </div>
 
                     <InputNumber min={1} max={currentStock} addonBefore='quantity' value={quantity} disabled={currentStock === 0 ? true : false} onChange={setQuantity} />
                     <div>
-                        <Button type="primary" className="cart-button" icon={<PlusOutlined />} disabled={currentStock === 0 || cart.some(orderItem => orderItem.product._id === product._id) ? true : false} onClick={handleAddToCart}>
+                        <Button type="primary" className="cart-button" icon={<PlusOutlined />} disabled={selectedSize === '' || currentStock === 0 || cart.some(orderItem => orderItem.selectedColor.color === selectedColor.color && orderItem.selectedSize === selectedSize && orderItem.product._id === product._id) ? true : false} onClick={handleAddToCart}>
                             Add To Cart
                         </Button>
                         {favorites.findIndex(ele => ele._id === product._id) === -1 ? <Button size='large' icon={<HeartOutlined />} disabled={product._id === 1 ? true : false} onClick={handleAddToFavorites} /> :

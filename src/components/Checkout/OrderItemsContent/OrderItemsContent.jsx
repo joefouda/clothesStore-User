@@ -6,7 +6,7 @@ import ProductPrice from '../../../shared/ProductPrice'
 
 const OrderItemsContent = () => {
     const cart = useContext(CartContext)
-
+    console.log(cart)
     const data = cart.map((orderItem, i) => ({
         title: orderItem.product.name,
         photo: orderItem.selectedColor.photos[0].src,
@@ -15,6 +15,8 @@ const OrderItemsContent = () => {
             <Descriptions.Item label="Product Price" span={3}><ProductPrice product={orderItem.product} /></Descriptions.Item>
             <Descriptions.Item label="OrderItem total Price" span={3}>{orderItem.orderPrice}</Descriptions.Item>
             <Descriptions.Item label="Description" span={3}>{orderItem.product.description}</Descriptions.Item>
+            <Descriptions.Item label="Color" span={3}><div style={{display:'inline-block', height: '1vw', width: '2vw', backgroundColor:orderItem.selectedColor.color}}></div></Descriptions.Item>
+            <Descriptions.Item label="Size" span={3}>{orderItem.selectedSize}</Descriptions.Item>
         </Descriptions>
     }));
 
