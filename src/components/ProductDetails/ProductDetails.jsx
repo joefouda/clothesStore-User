@@ -93,15 +93,19 @@ const ProductDetails = () => {
         toggleProgress()
     }
 
+    const handleSizeSelection = (newSize) => {
+        let currentSize = selectedColor.sizes.find(size=> size.size === newSize)
+        setSelectedSize(newSize) 
+        setCurrentStock(currentSize.stock)
+    }
+
     useEffect(() => {
         toggleProgress()
         axios.get(`http://localhost:3000/api/v1/product/${levels.id}`).then((res) => {
             setProduct(res.data.product)
             setPhotos(res.data.product.colors[0].photos)
-            setCurrentStock(res.data.product.colors[0].sizes[0].stock)
             setCurrentColors(res.data.product.colors)
             setSelectedColor(res.data.product.colors[0])
-            // setSelectedSize(res.data.product.colors[0].sizes[0].size)
             toggleProgress()
         }).catch(error => {
             openNotification('error', 'Server Error')
@@ -121,7 +125,7 @@ const ProductDetails = () => {
                     <div className='product-details-rightside-info'>
                         <h1>{product.name}</h1>
                         <ProductPrice product={product} />
-                        {!currentStock ? <Tag color="red">Not Available</Tag> : currentStock === 1 ? <Tag color="gold">Only one Item left</Tag> : <Tag color="green">Available in Stock</Tag>}
+                        {selectedSize === ''?'':!currentStock ? <Tag color="red">Not Available</Tag> : currentStock === 1 ? <Tag color="gold">Only one Item left</Tag> : <Tag color="green">Available in Stock</Tag>}
                     </div>
                     <div className="variants-container">
                         <div className="colors">
@@ -131,7 +135,7 @@ const ProductDetails = () => {
                     </div>
                     <div className="variants-container">
                     <div className="sizes">
-                        {selectedColor?.sizes?.map(size=><div key={size._id} className={`size variant ${selectedSize === size.size?'selected-variant':''}`} onClick={()=>setSelectedSize(size.size)}>{size.size}</div>)}
+                        {selectedColor?.sizes?.map(size=><div key={size._id} className={`size variant ${selectedSize === size.size?'selected-variant':''}`} onClick={()=>handleSizeSelection(size.size)}>{size.size}</div>)}
                     </div>
                     </div>
 

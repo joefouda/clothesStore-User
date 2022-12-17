@@ -1,11 +1,20 @@
 import './AddressContent.css'
 import { Form, Input, Button, Cascader, Divider  } from 'antd'
-import residences from "../../../shared/residences"
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { NotificationContext } from '../../../contexts/notificationContext';
 import useToggle from '../../../hooks/useToggleState';
+import axios from 'axios';
 
 const EditInfoForm = (props) => {
+    console.log(props)
+    const [residences, setResidences] = useState(
+        [
+            {
+                value: 'egypt',
+                label: 'Egypt',
+                children: []
+            }
+        ])
     const [editMode, toggleEditMode] = useToggle(false)
     const { openNotification } = useContext(NotificationContext)
     const onFinish = (values) => {
@@ -22,6 +31,15 @@ const EditInfoForm = (props) => {
     }
 
     const [selectAddressForm] = Form.useForm();
+    useEffect(()=> {
+        axios.get(`http://localhost:3000/api/v1/address`).then((res)=> {
+            let newResidences = [...residences]
+            newResidences[0].children = res.data.addresses.map(address=> {
+                return {...address, value:address.governorate, label:address.governorate}
+            })
+            setResidences(newResidences)
+        })
+    },[])
 
     useEffect(() => {
         selectAddressForm.setFieldsValue({

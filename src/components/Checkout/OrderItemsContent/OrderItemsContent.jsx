@@ -4,9 +4,9 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import ProductPrice from '../../../shared/ProductPrice'
 
-const OrderItemsContent = () => {
+const OrderItemsContent = (props) => {
+    console.log(props)
     const cart = useContext(CartContext)
-    console.log(cart)
     const data = cart.map((orderItem, i) => ({
         title: orderItem.product.name,
         photo: orderItem.selectedColor.photos[0].src,
@@ -27,9 +27,10 @@ const OrderItemsContent = () => {
             dataSource={data}
             footer={
                 <div>
-                    <h3>Delivery fees : LE 20</h3>
+                    <h3>Delivery fees : LE {props.currentGovernorate.shippingCost}</h3>
+                    <h3>Order Total : LE {cart.reduce((st,next)=>{ return st+next.orderPrice },0)}</h3>
                     <h2>
-                        Order Total (Including Delivery) : LE {20 + cart.reduce((st,next)=>{
+                        Order Total (Including Delivery) : LE {props.currentGovernorate.shippingCost + cart.reduce((st,next)=>{
                             return st+next.orderPrice
                         },0)}
                     </h2>

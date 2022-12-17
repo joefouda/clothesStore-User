@@ -1,7 +1,7 @@
 import './Checkout.css'
 import { Button, Steps } from 'antd';
 import { ArrowRightOutlined, ArrowLeftOutlined } from '@ant-design/icons'
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import MainWrapper from '../../shared/main-wrapper';
 import AddressContent from './AdressContent/AddressContent'
@@ -19,13 +19,13 @@ const Checkout = () => {
     const { openNotification } = useContext(NotificationContext)
     const navigate = useNavigate()
     const user = useContext(UserContext)
-    console.log(user)
     const dispatchUser = useContext(DispatchUserContext)
     const cart = useContext(CartContext)
     const dispatchCart = useContext(DispatchContext)
     const [current, setCurrent] = useState(0);
     const [paymentMethod, setPaymentMethod] = useState('Cash On Delivery')
     const [shippingAddress, setShippingAddress] = useState(user.address)
+    const [currentGovernorate, setCurrentGovernorate] = useState({})
 
     const steps = [
         {
@@ -34,7 +34,7 @@ const Checkout = () => {
         },
         {
             title: 'Order Items',
-            content: <OrderItemsContent />,
+            content: <OrderItemsContent currentGovernorate={currentGovernorate} />,
         },
         {
             title: 'Payment Method',
@@ -51,18 +51,18 @@ const Checkout = () => {
     };
 
     const handleCheckout = ()=> {
+        console.log(cart)
         let order = {
             orderItems : [...cart],
             shippingAddress,
             paymentMethod,
-            grandTotal:20 +cart.reduce((st,next)=>st+next.orderPrice,0),
+            grandTotal:currentGovernorate.shippingCost + cart.reduce((st,next)=>st+next.orderPrice,0),
         }
         axios.post('http://localhost:3000/api/v1/order',order, {
             headers: {
                 'Authorization': localStorage.getItem('token')
             }
         }).then(res=> {
-            console.log(res)
             dispatchUser({type:'SET', user:res.data.user})
             dispatchCart({type:'PERMENANTCLEAR'})
             openNotification('success', 'Your order is placed succesfully')
@@ -71,6 +71,14 @@ const Checkout = () => {
             openNotification('error', 'Server Error')
         })
     }
+
+    useEffect(()=> {
+        axios.get(`http://localhost:3000/api/v1/address`).then((res)=> {
+            setCurrentGovernorate(res.data.addresses.find(address=> {
+                return address.governorate === shippingAddress.province
+            }))
+        })
+    },[])
 
     return (
         <MainWrapper>

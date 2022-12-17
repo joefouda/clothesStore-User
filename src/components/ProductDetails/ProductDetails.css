@@ -60,8 +60,8 @@
 }
 
 .variant {
-    width: 3vw;
-    height: 3vw;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
     transition: opacity .5s;
 }

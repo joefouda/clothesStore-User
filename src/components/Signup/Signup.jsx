@@ -1,16 +1,26 @@
 import './Signup.css'
 import MainWrapper from "../../shared/main-wrapper"
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Form, Input, Button, Cascader, Divider, Spin } from 'antd'
 import { FormOutlined } from '@ant-design/icons'
 import authentication from '../../auth/authentication';
-import residences from "../../shared/residences"
 import { NotificationContext } from "../../contexts/notificationContext"
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import useToggle from '../../hooks/useToggleState'
 import FormWrapper from '../../shared/form.wrapper/form.wrapper';
+import TextArea from 'antd/lib/input/TextArea'
+import { useEffect } from 'react'
+import axios from 'axios'
 
 const Signup = () => {
+    const [residences, setResidences] = useState(
+        [
+            {
+                value: 'egypt',
+                label: 'Egypt',
+                children: []
+            }
+        ])
     const [progress, toggleProgress] = useToggle(false)
     const navigate = useNavigate()
     const { openNotification } = useContext(NotificationContext)
@@ -39,6 +49,16 @@ const Signup = () => {
             openNotification('error', error.message)
         })
     }
+
+    useEffect(()=> {
+        axios.get(`http://localhost:3000/api/v1/address`).then((res)=> {
+            let newResidences = [...residences]
+            newResidences[0].children = res.data.addresses.map(address=> {
+                return {...address, value:address.governorate, label:address.governorate}
+            })
+            setResidences(newResidences)
+        })
+    },[])
     const [signupForm] = Form.useForm();
     return (
         <MainWrapper>
@@ -136,7 +156,7 @@ const Signup = () => {
                     <Form.Item>
                         <Input.Group compact>
                             <Form.Item
-                                style={{ width: '20%' }}
+                                style={{ width: '60%' }}
                                 name={['address', 'countryProvince']}
                                 rules={[
                                     { type: 'array', required: true, message: 'Please select your Country / Province' },
@@ -145,20 +165,19 @@ const Signup = () => {
                                 <Cascader options={residences} placeholder="Country / Province" size="large" />
                             </Form.Item>
                             <Form.Item
-                                style={{ width: '30%' }}
+                                style={{ width: '40%' }}
                                 name={['address', 'street']}
                                 rules={[{ required: true, message: 'Street is required' }]}
                             >
                                 <Input placeholder="street" size="large" />
                             </Form.Item>
-                            <Form.Item
-                                style={{ width: '50%' }}
-                                name={['address', 'details']}
-                                rules={[{ required: true, message: 'Address Details is required' }]}
-                            >
-                                <Input placeholder="More Details" size="large" />
-                            </Form.Item>
                         </Input.Group>
+                    <Form.Item
+                        name={['address', 'details']}
+                        rules={[{ required: true, message: 'Address Details is required' }]}
+                    >
+                        <TextArea placeholder="More Details"/>
+                    </Form.Item>
                     </Form.Item>
                     <Form.Item >
                         <Button icon={<FormOutlined />} className="signup-signup-button" type="primary" htmlType="submit" size='large' loading={progress?true:false}>
